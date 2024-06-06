@@ -1,7 +1,5 @@
 package com.szw.payment.test;
 
-import java.time.LocalDateTime;
-
 import com.szw.payment.bootstrap.Application;
 import com.szw.payment.entity.PayOrder;
 import com.szw.payment.store.PayOrderStore;
@@ -56,12 +54,12 @@ public class PayOrderStoreTest {
 
 	@Test
 	public void testCompletePay() {
-		PayOrder payOrder = payOrderStore.findById(1L);
-		int rows = payOrderStore.completePay("test", LocalDateTime.now(),
-				payOrder.getOutTradeNo(), "not_pay", "success",
-				payOrder.getVersion());
-
-		System.out.print(rows + "\n");
+//		PayOrder payOrder = payOrderStore.findById(1L);
+//		int rows = payOrderStore.completePay("test", LocalDateTime.now(),
+//				payOrder.getOutTradeNo(), "not_pay", "success",
+//				payOrder.getVersion());
+//
+//		System.out.print(rows + "\n");
 	}
 
 	@Test

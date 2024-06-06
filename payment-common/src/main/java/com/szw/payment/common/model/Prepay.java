@@ -56,4 +56,14 @@ public class Prepay {
 	 */
 	private String transactionId;
 
+	/**
+	 * 平台订单id
+	 */
+	private String tradeId;
+
+	/**
+	 * 平台用户id
+	 */
+	private String userId;
+
 }

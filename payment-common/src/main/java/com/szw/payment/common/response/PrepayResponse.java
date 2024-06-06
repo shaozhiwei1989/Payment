@@ -20,14 +20,14 @@ public class PrepayResponse {
 	private String nonceStr;
 
 	/**
-	 * 签名方式 (仅微信相关支付)
-	 */
-	private String signType;
-
-	/**
 	 * 支付签名
 	 */
-	private String paySign;
+	private String sign;
+
+	/**
+	 * 签名类型
+	 */
+	private String signType;
 
 	/**
 	 * 时间戳 (仅微信相关支付)
@@ -37,6 +37,6 @@ public class PrepayResponse {
 	/**
 	 * 微信支付签名串 (仅微信相关支付)
 	 */
-	private String packageStr;
+	private String packageValue;
 
 }

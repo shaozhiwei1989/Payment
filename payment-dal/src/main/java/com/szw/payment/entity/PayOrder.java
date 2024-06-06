@@ -144,9 +144,6 @@ public class PayOrder implements Serializable {
 		if (val != null) {
 			map.put(key, val);
 		}
-		else {
-			removeExtraParam(key);
-		}
 		return this;
 	}
 

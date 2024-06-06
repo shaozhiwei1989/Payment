@@ -50,8 +50,8 @@ public class WxAppPay extends AbstractWxPay implements Pay {
 				.prePayId(response.getPrepayId())
 				.nonceStr(nonceStr)
 				.timeStamp(timeStamp)
-				.paySign(signStr)
-				.packageStr("Sign=WXPay")
+				.sign(signStr)
+				.packageValue("Sign=WXPay")
 				.build();
 	}
 

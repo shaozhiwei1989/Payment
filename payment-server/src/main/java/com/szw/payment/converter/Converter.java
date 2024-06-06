@@ -1,7 +1,12 @@
 package com.szw.payment.converter;
 
+import com.szw.payment.common.Constants;
+import com.szw.payment.common.ExtraKeys;
 import com.szw.payment.common.model.ConfigInfo;
+import com.szw.payment.common.model.Prepay;
+import com.szw.payment.common.response.PrepayResponse;
 import com.szw.payment.entity.Config;
+import com.szw.payment.entity.PayOrder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +27,34 @@ public final class Converter {
 		configInfo.setPublicKey(config.getPublicKey());
 		configInfo.setPrivateKey(config.getPrivateKey());
 		return configInfo;
+	}
+
+
+	public static PayOrder buildPayOrder(Config config, Prepay prepay, PrepayResponse response) {
+		PayOrder payOrder = new PayOrder();
+		payOrder.setConfigId(config.getId());
+		payOrder.setChannel(config.getChannel());
+		payOrder.setAmount(prepay.getTotalFee());
+		payOrder.setOutTradeNo(prepay.getOutTradeNo());
+		payOrder.setTradeId(prepay.getTradeId());
+		payOrder.setUserId(prepay.getUserId());
+		payOrder.setExpireTime(prepay.getExpireTime());
+		payOrder.setBalance(prepay.getTotalFee());
+
+		payOrder.setVersion(0L);
+		payOrder.setRefundAmount(0L);
+		payOrder.setRefundFrozenAmount(0L);
+		payOrder.setStatus(Constants.Pay.NOT_PAY);
+
+		payOrder.setPrePayId(response.getPrePayId());
+		payOrder.putExtraParam(ExtraKeys.SIGN, response.getSign())
+				.putExtraParam(ExtraKeys.SIGN_TYPE, response.getSignType())
+				.putExtraParam(ExtraKeys.NONCE_STR, response.getNonceStr())
+				.putExtraParam(ExtraKeys.TIME_STAMP, response.getTimeStamp())
+				.putExtraParam(ExtraKeys.PACKAGE_VALUE, response.getPackageValue())
+				.generateExtraParam();
+
+		return payOrder;
 	}
 
 }

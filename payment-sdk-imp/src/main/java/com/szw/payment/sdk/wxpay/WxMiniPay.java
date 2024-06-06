@@ -7,6 +7,7 @@ import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.response.PrepayResponse;
 import com.szw.payment.common.response.QueryPayOrderResponse;
 import com.szw.payment.sdk.Pay;
+import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.util.NonceUtil;
 import com.wechat.pay.java.service.payments.jsapi.JsapiService;
 import com.wechat.pay.java.service.payments.jsapi.model.Amount;
@@ -40,23 +41,25 @@ public class WxMiniPay extends AbstractWxPay implements Pay {
 		com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse response = service.prepay(request);
 
 		String nonceStr = NonceUtil.createNonce(32);
-		String packageStr = "prepay_id=" + response.getPrepayId();
+		String packageValue = "prepay_id=" + response.getPrepayId();
 		String timeStamp = String.valueOf(System.currentTimeMillis() / 1000L);
 
 		StringJoiner joiner = new StringJoiner("\n");
 		joiner.add(configInfo.getAppId());
 		joiner.add(timeStamp);
 		joiner.add(nonceStr);
-		joiner.add(packageStr);
+		joiner.add(packageValue);
 		joiner.add("\n");
 
-		String signStr = wxConfig.createSigner().sign(joiner.toString()).getSign();
+		Signer signer = wxConfig.createSigner();
+		String signStr = signer.sign(joiner.toString()).getSign();
 		return PrepayResponse.builder()
 				.prePayId(response.getPrepayId())
 				.nonceStr(nonceStr)
 				.timeStamp(timeStamp)
-				.paySign(signStr)
-				.packageStr(packageStr)
+				.sign(signStr)
+				.signType(signer.getAlgorithm())
+				.packageValue(packageValue)
 				.build();
 	}
 

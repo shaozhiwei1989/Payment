@@ -99,7 +99,7 @@ public class AliPay implements Pay {
 
 		return PrepayResponse.builder()
 				.prePayId(genPrePayId())
-				.paySign(response.getBody())
+				.sign(response.getBody())
 				.build();
 	}
 

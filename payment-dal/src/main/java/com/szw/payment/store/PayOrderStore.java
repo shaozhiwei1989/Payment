@@ -25,12 +25,11 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 				      pay_done_time = :payDoneTime,
 				      `status` = :toStatus,
 				      `version` = `version` + 1
-				where out_trade_no = :outTradeNo
+				where id = :id
 				  and `status` = :fromStatus
-				  and `version` = :version
 			""")
-	int completePay(String transactionId, LocalDateTime payDoneTime,
-			String outTradeNo, String fromStatus, String toStatus, long version);
+	int completePay(Long id, String fromStatus, String toStatus,
+			String transactionId, LocalDateTime payDoneTime);
 
 
 	@Modifying
