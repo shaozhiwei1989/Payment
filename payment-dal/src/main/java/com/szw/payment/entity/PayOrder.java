@@ -156,7 +156,7 @@ public class PayOrder implements Serializable {
 
 	public void generateExtraParam() {
 		Map<String, String> extraParamMap = this.extraParamMap;
-		if (extraParamMap != null) {
+		if (extraParamMap != null && !extraParamMap.isEmpty()) {
 			this.extraParam = GSON.toJson(extraParamMap);
 		}
 	}
