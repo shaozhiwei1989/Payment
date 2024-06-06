@@ -21,17 +21,16 @@ public class WxAppPay extends AbstractWxPay implements Pay {
 	@Override
 	public PrepayResponse prepay(Prepay prepay) {
 		PrepayRequest request = new PrepayRequest();
-
-		Amount amount = new Amount();
-		amount.setTotal(prepay.getTotalFee().intValue());
-		request.setAmount(amount);
-
 		request.setAppid(configInfo.getAppId());
 		request.setMchid(configInfo.getMchId());
 		request.setNotifyUrl(configInfo.getNotifyUrl());
 		request.setDescription(prepay.getBody());
 		request.setOutTradeNo(prepay.getOutTradeNo());
 		request.setAttach(prepay.getPassBackParams());
+
+		Amount amount = new Amount();
+		amount.setTotal(prepay.getTotalFee().intValue());
+		request.setAmount(amount);
 
 		AppService service = new AppService.Builder().config(wxConfig).build();
 		com.wechat.pay.java.service.payments.app.model.PrepayResponse response = service.prepay(request);
