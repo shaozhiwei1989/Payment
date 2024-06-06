@@ -7,6 +7,7 @@ import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.response.PrepayResponse;
 import com.szw.payment.common.response.QueryPayOrderResponse;
 import com.szw.payment.sdk.Pay;
+import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.util.NonceUtil;
 import com.wechat.pay.java.service.payments.app.AppService;
 import com.wechat.pay.java.service.payments.app.model.Amount;
@@ -45,12 +46,14 @@ public class WxAppPay extends AbstractWxPay implements Pay {
 		joiner.add(response.getPrepayId());
 		joiner.add("\n");
 
-		String signStr = wxConfig.createSigner().sign(joiner.toString()).getSign();
+		Signer signer = wxConfig.createSigner();
+		String signStr = signer.sign(joiner.toString()).getSign();
 		return PrepayResponse.builder()
 				.prePayId(response.getPrepayId())
 				.nonceStr(nonceStr)
 				.timeStamp(timeStamp)
 				.sign(signStr)
+				.signType(signer.getAlgorithm())
 				.packageValue("Sign=WXPay")
 				.build();
 	}
