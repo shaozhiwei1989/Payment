@@ -1,0 +1,20 @@
+[
+  {
+    "channel": "wx_app",
+    "apiVersion": "v3",
+    "cls": "com.szw.payment.sdk.wxpay.WxAppPay",
+    "desc": "微信App支付"
+  },
+  {
+    "channel": "wx_mini",
+    "apiVersion": "v3",
+    "cls": "com.szw.payment.sdk.wxpay.WxMiniPay",
+    "desc": "微信小程序支付"
+  },
+  {
+    "channel": "alipay",
+    "apiVersion": "1.0",
+    "cls": "com.szw.payment.sdk.alipay.AliPay",
+    "desc": "支付宝支付"
+  }
+]
