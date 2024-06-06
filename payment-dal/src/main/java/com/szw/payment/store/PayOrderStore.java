@@ -23,8 +23,7 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 				update pay_order
 				  set transaction_id = :transactionId,
 				      pay_done_time = :payDoneTime,
-				      `status` = :toStatus,
-				      `version` = `version` + 1
+				      `status` = :toStatus
 				where id = :id
 				  and `status` = :fromStatus
 			""")
