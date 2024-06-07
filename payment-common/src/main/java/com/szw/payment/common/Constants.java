@@ -46,4 +46,13 @@ public final class Constants {
 		public static final String PROCESSING = "processing";
 	}
 
+	public static final class Tag {
+		public static final String KEY = "tag";
+
+		public static final String SUCCESS = "success";
+
+		public static final String ERROR = "error";
+
+	}
+
 }

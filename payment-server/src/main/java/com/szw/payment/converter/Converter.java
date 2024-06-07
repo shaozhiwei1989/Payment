@@ -8,6 +8,7 @@ import com.szw.payment.common.ChannelEnum;
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.ExtraKeys;
 import com.szw.payment.common.model.ConfigInfo;
+import com.szw.payment.common.model.PayOrderMessage;
 import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.model.PrepayResponse;
 import com.szw.payment.entity.Config;
@@ -94,6 +95,15 @@ public final class Converter {
 		response.setAppId(payOrder.getExtraParamByKey(ExtraKeys.APP_ID));
 		response.setMchId(payOrder.getExtraParamByKey(ExtraKeys.MCH_ID));
 		return response;
+	}
+
+	public static PayOrderMessage buildPayOrderMessage(PayOrder payOrder) {
+		PayOrderMessage message = new PayOrderMessage();
+		message.setPrePayId(payOrder.getPrePayId());
+		message.setPayDoneTime(payOrder.getPayDoneTime());
+		message.setChannel(payOrder.getChannel());
+		message.setTransactionId(payOrder.getTransactionId());
+		return message;
 	}
 
 }

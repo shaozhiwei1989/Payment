@@ -10,15 +10,20 @@ import com.szw.payment.api.model.PayOrderCreateRequest;
 import com.szw.payment.api.model.PayOrderResponse;
 import com.szw.payment.api.service.PayOrderService;
 import com.szw.payment.common.Constants;
+import com.szw.payment.common.model.PayOrderMessage;
 import com.szw.payment.common.model.Prepay;
 import com.szw.payment.converter.Converter;
 import com.szw.payment.entity.Config;
 import com.szw.payment.entity.PayOrder;
+import com.szw.payment.facade.MessageProducer;
 import com.szw.payment.manager.ConfigManager;
 import com.szw.payment.manager.PayOrderManager;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
+
+import org.springframework.beans.factory.annotation.Value;
 
 @DubboService
 @Slf4j(topic = "running")
@@ -29,6 +34,13 @@ public class PayOrderServiceImpl implements PayOrderService {
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	@Named("${producer.name}")
+	private MessageProducer<PayOrderMessage> messageProducer;
+
+	@Value("${mq-topic.pay}")
+	private String topic;
 
 
 	@Override
@@ -62,8 +74,13 @@ public class PayOrderServiceImpl implements PayOrderService {
 			LocalDateTime payTime = request.getPayTime();
 			String transactionId = request.getTransactionId();
 
-			boolean b = payOrderManager.completePay(outTradeNo, transactionId, payTime);
-			return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", b);
+			boolean ok = payOrderManager.completePay(outTradeNo, transactionId, payTime);
+			if (ok) {
+				PayOrder payOrder = payOrderManager.findByOutTradeNo(outTradeNo);
+				PayOrderMessage message = Converter.buildPayOrderMessage(payOrder);
+				messageProducer.send(this.topic, Constants.Tag.SUCCESS, message);
+			}
+			return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", ok);
 		}
 		catch (Exception e) {
 			log.error("completePay", e);

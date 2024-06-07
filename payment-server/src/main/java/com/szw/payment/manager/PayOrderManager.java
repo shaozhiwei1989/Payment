@@ -32,7 +32,7 @@ public class PayOrderManager {
 	}
 
 	public boolean completePay(String outTradeNo, String transactionId, LocalDateTime payTime) {
-		PayOrder payOrder = payOrderStore.findByOutTradeNo(outTradeNo);
+		PayOrder payOrder = findByOutTradeNo(outTradeNo);
 		if (payOrder == null) {
 			throw new RuntimeException("outTradeNo不存在#" + outTradeNo);
 		}
@@ -44,19 +44,17 @@ public class PayOrderManager {
 					String.format("支付单不是NOT_PAY状态# outTradeNo:%s  status:%s",
 							outTradeNo, payOrder.getStatus()));
 		}
-
 		int rows = payOrderStore.completePay(payOrder.getId(),
 				Constants.Pay.WAIT_PAY, Constants.Pay.SUCCESS, transactionId, payTime);
-
-		boolean updated = (rows > 0);
-		if (updated) {
-			// 发送消息
-		}
-		return updated;
+		return rows > 0;
 	}
 
 	public PayOrder findByTradeIdAndChannel(String tradeId, String channel) {
 		return payOrderStore.findByTradeIdAndChannel(tradeId, channel);
+	}
+
+	public PayOrder findByOutTradeNo(String outTradeNo) {
+		return payOrderStore.findByOutTradeNo(outTradeNo);
 	}
 
 }

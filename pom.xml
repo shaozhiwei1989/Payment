@@ -124,7 +124,6 @@
 				<artifactId>dubbo-spring-boot-starter</artifactId>
 				<version>3.2.13</version>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 

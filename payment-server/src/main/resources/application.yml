@@ -3,13 +3,13 @@ spring:
     name: Payment
 
   ## kafka
-#  kafka:
-#    producer:
-#      bootstrap-servers: 127.0.0.1:9092
-#      retries: 3
-#      acks: 1
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      retries: 3
+      acks: 1
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
   ## datasource
   datasource:
@@ -65,6 +65,13 @@ dubbo:
     port: 30381
   registry:
     address: zookeeper://127.0.0.1:2181
+
+producer:
+  name: kafka_producer
+
+mq-topic:
+  pay: pay
+  refund: refund
 
 
 

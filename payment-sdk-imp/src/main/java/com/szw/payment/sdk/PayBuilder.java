@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.szw.payment.common.model.ConfigInfo;
+import com.szw.payment.common.utils.GsonUtil;
 import com.szw.payment.sdk.exception.PayException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,10 +32,9 @@ public final class PayBuilder {
 			assert inputStream != null;
 
 			Type type = new TypeToken<List<Mapping>>() {}.getType();
-			Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 			JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
 
-			List<Mapping> list = gson.fromJson(reader, type);
+			List<Mapping> list = GsonUtil.GSON.fromJson(reader, type);
 			list.forEach(mapping -> {
 				Class<?> aClass = loadClass(mapping.getCls());
 				if (aClass != null) {
