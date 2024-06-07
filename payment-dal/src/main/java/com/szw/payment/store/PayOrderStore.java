@@ -35,36 +35,30 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 	@Query("""
 				update pay_order
 				  set balance = balance - :amount,
-				      refund_frozen_Amount = refund_frozen_Amount + :amount,
-				      `version` = `version` + 1
+				      refund_frozen_Amount = refund_frozen_Amount + :amount
 				where id = :id
 				  and balance >= :amount
-				  and `version` = :version
 			""")
-	int freezeRefundAmount(Long id, long amount, long version);
+	int freezeRefundAmount(Long id, long amount);
 
 	@Modifying
 	@Query("""
 				update pay_order
 				  set refund_frozen_Amount = refund_frozen_Amount - :amount,
-				      refund_amount = refund_amount + :amount,
-				      `version` = `version` + 1
+				      refund_amount = refund_amount + :amount
 				where id = :id
 				  and refund_frozen_Amount >= :amount
-				  and `version` = :version
 			""")
-	int completeRefund(Long id, long amount, long version);
+	int completeRefund(Long id, long amount);
 
 	@Modifying
 	@Query("""
 				update pay_order
 				  set refund_frozen_Amount = refund_frozen_Amount - :amount,
-				      balance = balance + :amount,
-				      `version` = `version` + 1
+				      balance = balance + :amount
 				where id = :id
 				  and refund_frozen_Amount >= :amount
-				  and `version` = :version
 			""")
-	int rollbackRefund(Long id, long amount, long version);
+	int rollbackRefund(Long id, long amount);
 
 }

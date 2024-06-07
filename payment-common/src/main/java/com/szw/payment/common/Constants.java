@@ -10,22 +10,22 @@ public final class Constants {
 		/**
 		 * 支付成功
 		 */
-		public static final String SUCCESS = "SUCCESS";
+		public static final String SUCCESS = "success";
 
 		/**
 		 * 未支付
 		 */
-		public static final String NOT_PAY = "NOT_PAY";
+		public static final String NOT_PAY = "not_pay";
 
 		/**
 		 * 已经关闭
 		 */
-		public static final String CLOSED = "CLOSED";
+		public static final String CLOSED = "closed";
 
 		/**
 		 * 未知
 		 */
-		public static final String UNKNOWN = "UNKNOWN";
+		public static final String UNKNOWN = "unknown";
 	}
 
 
@@ -33,17 +33,17 @@ public final class Constants {
 		/**
 		 * 退款成功
 		 */
-		public static final String SUCCESS = "SUCCESS";
+		public static final String SUCCESS = "success";
 
 		/**
 		 * 退款失败
 		 */
-		public static final String ERROR = "ERROR";
+		public static final String ERROR = "error";
 
 		/**
 		 * 退款中
 		 */
-		public static final String PROCESSING = "PROCESSING";
+		public static final String PROCESSING = "processing";
 	}
 
 }

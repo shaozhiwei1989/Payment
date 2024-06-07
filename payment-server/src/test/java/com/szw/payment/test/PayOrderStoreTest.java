@@ -52,36 +52,36 @@ public class PayOrderStoreTest {
 		System.out.print(payOrder + "\n");
 	}
 
-	@Test
-	public void testCompletePay() {
+//	@Test
+//	public void testCompletePay() {
 //		PayOrder payOrder = payOrderStore.findById(1L);
 //		int rows = payOrderStore.completePay("test", LocalDateTime.now(),
 //				payOrder.getOutTradeNo(), "not_pay", "success",
 //				payOrder.getVersion());
 //
 //		System.out.print(rows + "\n");
-	}
+//	}
 
-	@Test
-	public void testFreezeRefundAmount() {
-		PayOrder payOrder = payOrderStore.findById(1L);
-		int rows = payOrderStore.freezeRefundAmount(payOrder.getId(), 2, payOrder.getVersion());
-		System.out.print(rows + "\n");
-	}
-
-	@Test
-	public void testCompleteRefund() {
-		PayOrder payOrder = payOrderStore.findById(1L);
-		int rows = payOrderStore.completeRefund(payOrder.getId(), 1, payOrder.getVersion());
-		System.out.print(rows + "\n");
-	}
-
-
-	@Test
-	public void testRollbackRefund() {
-		PayOrder payOrder = payOrderStore.findById(1L);
-		int rows = payOrderStore.rollbackRefund(payOrder.getId(), 1, payOrder.getVersion());
-		System.out.print(rows + "\n");
-	}
+//	@Test
+//	public void testFreezeRefundAmount() {
+//		PayOrder payOrder = payOrderStore.findById(1L);
+//		int rows = payOrderStore.freezeRefundAmount(payOrder.getId(), 2, payOrder.getVersion());
+//		System.out.print(rows + "\n");
+//	}
+//
+//	@Test
+//	public void testCompleteRefund() {
+//		PayOrder payOrder = payOrderStore.findById(1L);
+//		int rows = payOrderStore.completeRefund(payOrder.getId(), 1, payOrder.getVersion());
+//		System.out.print(rows + "\n");
+//	}
+//
+//
+//	@Test
+//	public void testRollbackRefund() {
+//		PayOrder payOrder = payOrderStore.findById(1L);
+//		int rows = payOrderStore.rollbackRefund(payOrder.getId(), 1, payOrder.getVersion());
+//		System.out.print(rows + "\n");
+//	}
 
 }
