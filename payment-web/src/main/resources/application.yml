@@ -1,0 +1,20 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: payment-web
+
+dubbo:
+  application:
+    name: payment-web
+    qos-enable: false
+  protocol:
+    name: dubbo
+    port: 30382
+  registry:
+    address: zookeeper://127.0.0.1:2181
+
+
+
+

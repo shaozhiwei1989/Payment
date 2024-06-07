@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Payment
+    name: payment-server
 
   ## kafka
   kafka:
@@ -60,14 +60,12 @@ spring:
 dubbo:
   application:
     name: payment-server
+    qos-enable: false
   protocol:
     name: dubbo
     port: 30381
   registry:
     address: zookeeper://127.0.0.1:2181
-
-producer:
-  name: kafka_producer
 
 mq-topic:
   pay: pay
