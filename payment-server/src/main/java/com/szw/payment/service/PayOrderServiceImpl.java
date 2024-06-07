@@ -19,6 +19,7 @@ import com.szw.payment.facade.MessageProducer;
 import com.szw.payment.manager.ConfigManager;
 import com.szw.payment.manager.PayOrderManager;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 
@@ -34,8 +35,8 @@ public class PayOrderServiceImpl implements PayOrderService {
 	@Inject
 	private ConfigManager configManager;
 
-//	@Inject
-//	@Named("${producer.name}")
+	@Inject
+	@Named("kafka_producer")
 	private MessageProducer<PayOrderMessage> messageProducer;
 
 	@Value("${mq-topic.pay}")
