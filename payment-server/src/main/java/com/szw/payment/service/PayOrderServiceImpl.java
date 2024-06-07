@@ -73,7 +73,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 
 	private static boolean checkIsValidIfNotNull(PayOrder payOrder) {
 		if (payOrder != null) {
-			if (!Objects.equals(Constants.Pay.NOT_PAY, payOrder.getStatus())) {
+			if (!Objects.equals(Constants.Pay.WAIT_PAY, payOrder.getStatus())) {
 				return false;
 			}
 			LocalDateTime expireTime = payOrder.getExpireTime();

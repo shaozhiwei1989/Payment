@@ -39,14 +39,20 @@ public class PayOrderManager {
 		if (Constants.Pay.SUCCESS.equals(payOrder.getStatus())) {
 			return true;
 		}
-		if (!Constants.Pay.NOT_PAY.equals(payOrder.getStatus())) {
+		if (!Constants.Pay.WAIT_PAY.equals(payOrder.getStatus())) {
 			throw new RuntimeException(
 					String.format("支付单不是NOT_PAY状态# outTradeNo:%s  status:%s",
 							outTradeNo, payOrder.getStatus()));
 		}
+
 		int rows = payOrderStore.completePay(payOrder.getId(),
-				Constants.Pay.NOT_PAY, Constants.Pay.SUCCESS, transactionId, payTime);
-		return rows > 0;
+				Constants.Pay.WAIT_PAY, Constants.Pay.SUCCESS, transactionId, payTime);
+
+		boolean updated = (rows > 0);
+		if (updated) {
+			// 发送消息
+		}
+		return updated;
 	}
 
 	public PayOrder findByTradeIdAndChannel(String tradeId, String channel) {

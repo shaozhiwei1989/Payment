@@ -15,7 +15,7 @@ public final class Constants {
 		/**
 		 * 未支付
 		 */
-		public static final String NOT_PAY = "not_pay";
+		public static final String WAIT_PAY = "wait_pay";
 
 		/**
 		 * 已经关闭

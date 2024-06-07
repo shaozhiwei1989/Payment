@@ -46,10 +46,9 @@ public final class Converter {
 		payOrder.setExpireTime(prepay.getExpireTime());
 		payOrder.setBalance(prepay.getTotalFee());
 
-		payOrder.setVersion(0L);
 		payOrder.setRefundAmount(0L);
 		payOrder.setRefundFrozenAmount(0L);
-		payOrder.setStatus(Constants.Pay.NOT_PAY);
+		payOrder.setStatus(Constants.Pay.WAIT_PAY);
 
 		payOrder.setPrePayId(response.getPrePayId());
 		payOrder.putExtraParam(ExtraKeys.SIGN, response.getSign())
@@ -74,7 +73,7 @@ public final class Converter {
 
 		ChannelEnum channelEnum = ChannelEnum.fromCode(config.getChannel());
 		String outTradeNo = String.format("%s-%s", request.getTradeId(), channelEnum.getIdentifier());
-		prepay.setOutTradeNo(outTradeNo); // 暂时有订单id 和 支付渠道标识符组成
+		prepay.setOutTradeNo(outTradeNo); // 暂时由 订单id 和 支付渠道标识符 组成
 
 		LocalDateTime expireTime = LocalDateTime.now().plusMinutes(90L);
 		prepay.setExpireTime(expireTime);

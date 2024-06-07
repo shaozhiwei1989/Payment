@@ -221,7 +221,7 @@ public class AliPay implements Pay {
 			return Constants.Pay.SUCCESS;
 		}
 		if ("WAIT_BUYER_PAY".equals(tradeState)) {
-			return Constants.Pay.NOT_PAY;
+			return Constants.Pay.WAIT_PAY;
 		}
 		if ("TRADE_CLOSED".equals(tradeState) || "TRADE_FINISHED".equals(tradeState)) {
 			return Constants.Pay.CLOSED;

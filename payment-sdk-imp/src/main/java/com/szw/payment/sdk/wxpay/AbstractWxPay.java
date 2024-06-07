@@ -107,7 +107,7 @@ public abstract class AbstractWxPay implements Pay {
 			return Constants.Pay.SUCCESS;
 		}
 		if (Transaction.TradeStateEnum.NOTPAY.name().equals(tradeState)) {
-			return Constants.Pay.NOT_PAY;
+			return Constants.Pay.WAIT_PAY;
 		}
 		if (Transaction.TradeStateEnum.CLOSED.name().equals(tradeState)) {
 			return Constants.Pay.CLOSED;
