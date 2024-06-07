@@ -1,4 +1,4 @@
-package com.szw.payment.facade;
+package com.szw.payment.producer;
 
 public interface MessageProducer<T> {
 

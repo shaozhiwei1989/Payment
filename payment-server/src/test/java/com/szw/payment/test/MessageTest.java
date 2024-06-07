@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.szw.payment.bootstrap.Application;
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.model.PayOrderMessage;
-import com.szw.payment.facade.MessageProducer;
+import com.szw.payment.producer.MessageProducer;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.junit.jupiter.api.Test;

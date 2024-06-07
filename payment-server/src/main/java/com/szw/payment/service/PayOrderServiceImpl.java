@@ -15,7 +15,7 @@ import com.szw.payment.common.model.Prepay;
 import com.szw.payment.converter.Converter;
 import com.szw.payment.entity.Config;
 import com.szw.payment.entity.PayOrder;
-import com.szw.payment.facade.MessageProducer;
+import com.szw.payment.producer.MessageProducer;
 import com.szw.payment.manager.ConfigManager;
 import com.szw.payment.manager.PayOrderManager;
 import jakarta.inject.Inject;

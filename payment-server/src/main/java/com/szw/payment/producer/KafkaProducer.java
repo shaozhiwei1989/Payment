@@ -1,4 +1,4 @@
-package com.szw.payment.facade;
+package com.szw.payment.producer;
 
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.utils.GsonUtil;
