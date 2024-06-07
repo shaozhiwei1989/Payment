@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -110,6 +109,7 @@ public class PayOrder implements Serializable {
 
 	/**
 	 * 状态
+	 * @see com.szw.payment.common.Constants.Pay
 	 */
 	@Column("status")
 	private String status;
@@ -132,12 +132,6 @@ public class PayOrder implements Serializable {
 	@Column("extra_param")
 	private String extraParam;
 
-	/**
-	 * 版本号
-	 */
-	@Version
-	@Column("version")
-	private Long version;
 
 	@Transient
 	private Map<String, String> extraParamMap;
