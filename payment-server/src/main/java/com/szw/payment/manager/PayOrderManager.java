@@ -41,7 +41,7 @@ public class PayOrderManager {
 		}
 		if (!Constants.Pay.WAIT_PAY.equals(payOrder.getStatus())) {
 			throw new RuntimeException(
-					String.format("支付单不是NOT_PAY状态# outTradeNo:%s  status:%s",
+					String.format("支付单不是未付款状态# outTradeNo:%s  status:%s",
 							outTradeNo, payOrder.getStatus()));
 		}
 		int rows = payOrderStore.completePay(payOrder.getId(),
