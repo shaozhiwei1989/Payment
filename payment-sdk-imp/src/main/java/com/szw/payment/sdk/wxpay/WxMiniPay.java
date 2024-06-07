@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.StringJoiner;
 
 import com.szw.payment.common.model.Prepay;
-import com.szw.payment.common.response.PrepayResponse;
-import com.szw.payment.common.response.QueryPayOrderResponse;
+import com.szw.payment.common.model.PrepayResponse;
+import com.szw.payment.common.model.PayOrderQueryResponse;
 import com.szw.payment.sdk.Pay;
 import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.util.NonceUtil;
@@ -65,7 +65,7 @@ public class WxMiniPay extends AbstractWxPay implements Pay {
 
 
 	@Override
-	public QueryPayOrderResponse queryPayOrder(Prepay prepay) {
+	public PayOrderQueryResponse queryPayOrder(Prepay prepay) {
 		QueryOrderByIdRequest request = new QueryOrderByIdRequest();
 		request.setTransactionId(prepay.getTransactionId());
 
@@ -74,7 +74,7 @@ public class WxMiniPay extends AbstractWxPay implements Pay {
 
 		String tradeState = translatePayStatus(transaction.getTradeState().name());
 		LocalDateTime successTime = convertStrToLocalDateTime(transaction.getSuccessTime());
-		return QueryPayOrderResponse.builder()
+		return PayOrderQueryResponse.builder()
 				.outTradeNo(transaction.getOutTradeNo())
 				.transactionId(transaction.getTransactionId())
 				.tradeState(tradeState)

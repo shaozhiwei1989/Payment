@@ -26,10 +26,10 @@ import com.szw.payment.common.Constants;
 import com.szw.payment.common.model.ConfigInfo;
 import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.model.Refund;
-import com.szw.payment.common.response.CreateRefundResponse;
-import com.szw.payment.common.response.PrepayResponse;
-import com.szw.payment.common.response.QueryPayOrderResponse;
-import com.szw.payment.common.response.QueryRefundOrderResponse;
+import com.szw.payment.common.model.RefundCreateResponse;
+import com.szw.payment.common.model.PrepayResponse;
+import com.szw.payment.common.model.PayOrderQueryResponse;
+import com.szw.payment.common.model.RefundQueryResponse;
 import com.szw.payment.sdk.Pay;
 import com.szw.payment.sdk.exception.PayErrCode;
 import com.szw.payment.sdk.exception.PayException;
@@ -104,7 +104,7 @@ public class AliPay implements Pay {
 	}
 
 	@Override
-	public CreateRefundResponse createRefund(Refund refund) {
+	public RefundCreateResponse createRefund(Refund refund) {
 		AlipayTradeRefundModel model = new AlipayTradeRefundModel();
 		model.setRefundAmount(String.valueOf(refund.getTotalFee() / 100F));
 		model.setTradeNo(refund.getTransactionId());
@@ -131,7 +131,7 @@ public class AliPay implements Pay {
 			throw new PayException(PayErrCode.CLIENT_API_ERR, errMsg);
 		}
 
-		return CreateRefundResponse.builder()
+		return RefundCreateResponse.builder()
 				.transactionId(response.getTradeNo())
 				.outRefundNo(refund.getOutRefundNo())
 				.waitCallBack(false)
@@ -139,7 +139,7 @@ public class AliPay implements Pay {
 	}
 
 	@Override
-	public QueryPayOrderResponse queryPayOrder(Prepay prepay) {
+	public PayOrderQueryResponse queryPayOrder(Prepay prepay) {
 		AlipayTradeQueryModel model = new AlipayTradeQueryModel();
 		model.setTradeNo(prepay.getTransactionId());
 
@@ -165,7 +165,7 @@ public class AliPay implements Pay {
 			payDoneTime = LocalDateTime.from(response.getSendPayDate().toInstant());
 		}
 
-		return QueryPayOrderResponse.builder()
+		return PayOrderQueryResponse.builder()
 				.tradeState(translatePayStatus(response.getTradeStatus()))
 				.outTradeNo(response.getOutTradeNo())
 				.transactionId(response.getTradeNo())
@@ -174,7 +174,7 @@ public class AliPay implements Pay {
 	}
 
 	@Override
-	public QueryRefundOrderResponse queryRefundOrder(Refund refund) {
+	public RefundQueryResponse queryRefundOrder(Refund refund) {
 		AlipayTradeFastpayRefundQueryModel model = new AlipayTradeFastpayRefundQueryModel();
 		model.setTradeNo(refund.getTransactionId());
 		model.setOutRequestNo(refund.getOutRefundNo());
@@ -196,7 +196,7 @@ public class AliPay implements Pay {
 			throw new PayException(PayErrCode.CLIENT_API_ERR, errMsg("Alipay退款查询接口失败", response));
 		}
 
-		return QueryRefundOrderResponse.builder()
+		return RefundQueryResponse.builder()
 				.transactionId(response.getTradeNo())
 				.outTradeNo(response.getOutTradeNo())
 				.outRefundNo(response.getOutRequestNo())

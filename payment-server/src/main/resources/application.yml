@@ -57,6 +57,14 @@ spring:
     jdbc:
       dialect: MYSQL
 
+dubbo:
+  application:
+    name: payment-server
+  protocol:
+    name: dubbo
+    port: 30381
+  registry:
+    address: zookeeper://127.0.0.1:2181
 
 
 

@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.model.ConfigInfo;
-import com.szw.payment.common.response.CreateRefundResponse;
-import com.szw.payment.common.response.QueryRefundOrderResponse;
+import com.szw.payment.common.model.RefundCreateResponse;
+import com.szw.payment.common.model.RefundQueryResponse;
 import com.szw.payment.sdk.Pay;
 import com.szw.payment.sdk.exception.PayErrCode;
 import com.szw.payment.sdk.exception.PayException;
@@ -46,7 +46,7 @@ public abstract class AbstractWxPay implements Pay {
 	}
 
 	@Override
-	public CreateRefundResponse createRefund(com.szw.payment.common.model.Refund refund) {
+	public RefundCreateResponse createRefund(com.szw.payment.common.model.Refund refund) {
 		CreateRequest request = new CreateRequest();
 		request.setNotifyUrl(configInfo.getRefundUrl());
 		request.setOutRefundNo(refund.getOutRefundNo());
@@ -71,7 +71,7 @@ public abstract class AbstractWxPay implements Pay {
 			}
 			throw new PayException(PayErrCode.CLIENT_API_ERR, e.getErrorMessage());
 		}
-		return CreateRefundResponse.builder()
+		return RefundCreateResponse.builder()
 				.outRefundNo(response.getOutRefundNo())
 				.transactionId(response.getTransactionId())
 				.waitCallBack(true)
@@ -80,7 +80,7 @@ public abstract class AbstractWxPay implements Pay {
 
 
 	@Override
-	public QueryRefundOrderResponse queryRefundOrder(com.szw.payment.common.model.Refund refund) {
+	public RefundQueryResponse queryRefundOrder(com.szw.payment.common.model.Refund refund) {
 		QueryByOutRefundNoRequest request = new QueryByOutRefundNoRequest();
 		request.setOutRefundNo(refund.getOutRefundNo());
 
@@ -88,7 +88,7 @@ public abstract class AbstractWxPay implements Pay {
 		Refund response = service.queryByOutRefundNo(request);
 
 		String refundStatus = translateRefundStatus(response.getStatus().name());
-		return QueryRefundOrderResponse.builder()
+		return RefundQueryResponse.builder()
 				.outRefundNo(response.getOutRefundNo())
 				.transactionId(response.getTransactionId())
 				.refundStatus(refundStatus)

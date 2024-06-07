@@ -1,4 +1,4 @@
-package com.szw.payment.common.response;
+package com.szw.payment.common.model;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class QueryPayOrderResponse {
+public class PayOrderQueryResponse {
 
 	/**
 	 * 外部订单号

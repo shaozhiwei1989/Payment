@@ -1,4 +1,4 @@
-package com.szw.payment.common.response;
+package com.szw.payment.common.model;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class CreateRefundResponse {
+public class RefundCreateResponse {
 
 	/**
 	 * 平台退款单号

@@ -4,10 +4,10 @@ package com.szw.payment.sdk;
 import com.szw.payment.common.model.ConfigInfo;
 import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.model.Refund;
-import com.szw.payment.common.response.CreateRefundResponse;
-import com.szw.payment.common.response.PrepayResponse;
-import com.szw.payment.common.response.QueryPayOrderResponse;
-import com.szw.payment.common.response.QueryRefundOrderResponse;
+import com.szw.payment.common.model.RefundCreateResponse;
+import com.szw.payment.common.model.PrepayResponse;
+import com.szw.payment.common.model.PayOrderQueryResponse;
+import com.szw.payment.common.model.RefundQueryResponse;
 
 
 public interface Pay {
@@ -25,16 +25,16 @@ public interface Pay {
 	/**
 	 * 创建退款
 	 */
-	CreateRefundResponse createRefund(Refund refund);
+	RefundCreateResponse createRefund(Refund refund);
 
 	/**
 	 * 查询支付订单
 	 */
-	QueryPayOrderResponse queryPayOrder(Prepay prepay);
+	PayOrderQueryResponse queryPayOrder(Prepay prepay);
 
 	/**
 	 * 查询退款订单
 	 */
-	QueryRefundOrderResponse queryRefundOrder(Refund refund);
+	RefundQueryResponse queryRefundOrder(Refund refund);
 
 }

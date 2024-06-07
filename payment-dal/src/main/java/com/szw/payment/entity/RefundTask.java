@@ -1,5 +1,6 @@
 package com.szw.payment.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -16,6 +17,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @ToString
 @Table("refund_task")
 public class RefundTask implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1723491984763145486L;
 
 	/**
 	 * id

@@ -1,4 +1,4 @@
-package com.szw.payment.common.response;
+package com.szw.payment.common.model;
 
 import lombok.Builder;
 import lombok.Getter;

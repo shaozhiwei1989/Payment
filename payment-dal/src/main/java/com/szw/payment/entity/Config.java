@@ -1,5 +1,6 @@
 package com.szw.payment.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import lombok.Getter;
@@ -15,6 +16,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @ToString
 @Table("config")
 public class Config implements Serializable {
+	@Serial
+	private static final long serialVersionUID = -1315946856628330254L;
 
 	/**
 	 * id

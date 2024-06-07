@@ -22,16 +22,6 @@ public class Prepay {
 	private String body;
 
 	/**
-	 * 商品详情
-	 */
-	private String detail;
-
-	/**
-	 * 标价币种
-	 */
-	private String feeType;
-
-	/**
 	 * 支付金额
 	 */
 	private Long totalFee;

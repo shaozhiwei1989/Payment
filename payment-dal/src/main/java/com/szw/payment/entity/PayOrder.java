@@ -1,5 +1,6 @@
 package com.szw.payment.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -26,9 +27,12 @@ import org.springframework.data.relational.core.mapping.Table;
 @ToString
 @Table("pay_order")
 public class PayOrder implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 8667123945785343517L;
 
 	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 	private static final Type TYPE_OF_MAP = new TypeToken<Map<String, String>>() {}.getType();
+
 
 	/**
 	 * id

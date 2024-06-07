@@ -16,4 +16,8 @@ public final class ExtraKeys {
 
 	public static final String PACKAGE_VALUE = "packageValue";
 
+	public static final String APP_ID = "appId";
+
+	public static final String MCH_ID = "mchId";
+
 }
