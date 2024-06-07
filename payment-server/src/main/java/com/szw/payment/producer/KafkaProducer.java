@@ -18,7 +18,6 @@ public class KafkaProducer<T> implements MessageProducer<T> {
 	@Override
 	public void send(String topic, String tag, T t) {
 		String json = GsonUtil.GSON.toJson(t);
-
 		ProducerRecord<String, String> record = new ProducerRecord<>(topic, json);
 		if (tag != null && !tag.trim().isEmpty()) {
 			record.headers().add(Constants.Tag.KEY, tag.getBytes());

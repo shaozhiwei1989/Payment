@@ -23,8 +23,8 @@ public final class GsonUtil {
 
 	public static final Gson GSON = new GsonBuilder()
 			.disableHtmlEscaping()
-			.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 			.registerTypeAdapter(Date.class, new DateAdapter())
+			.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 			.create();
 
 
