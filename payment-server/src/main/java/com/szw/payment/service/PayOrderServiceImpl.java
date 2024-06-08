@@ -128,8 +128,8 @@ public class PayOrderServiceImpl implements PayOrderService {
 		}
 		catch (Exception e) {
 			log.error("", e);
-			String message = (e instanceof ValidationException) ? "签名验证失败" : "接口异常";
-			return new ServiceResponse<>(ResponseCode.ERROR, message);
+			String msg = (e instanceof ValidationException) ? "签名验证失败" : "接口异常";
+			return new ServiceResponse<>(ResponseCode.ERROR, msg);
 		}
 	}
 
