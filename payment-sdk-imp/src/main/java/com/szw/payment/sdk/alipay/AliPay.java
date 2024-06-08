@@ -1,5 +1,10 @@
 package com.szw.payment.sdk.alipay;
 
+import static com.szw.payment.common.AliPayKeys.TRADE_STATUS_SUCCESS;
+import static com.szw.payment.common.AliPayKeys.TRADE_STATUS_TRADE_CLOSED;
+import static com.szw.payment.common.AliPayKeys.TRADE_STATUS_TRADE_FINISHED;
+import static com.szw.payment.common.AliPayKeys.TRADE_STATUS_WAIT_BUYER_PAY;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
@@ -22,13 +27,14 @@ import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.szw.payment.common.AliPayKeys;
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.model.ConfigInfo;
+import com.szw.payment.common.model.PayOrderQueryResponse;
 import com.szw.payment.common.model.Prepay;
+import com.szw.payment.common.model.PrepayResponse;
 import com.szw.payment.common.model.Refund;
 import com.szw.payment.common.model.RefundCreateResponse;
-import com.szw.payment.common.model.PrepayResponse;
-import com.szw.payment.common.model.PayOrderQueryResponse;
 import com.szw.payment.common.model.RefundQueryResponse;
 import com.szw.payment.sdk.Pay;
 import com.szw.payment.sdk.exception.PayErrCode;
@@ -36,11 +42,6 @@ import com.szw.payment.sdk.exception.PayException;
 import org.apache.commons.lang3.StringUtils;
 
 public class AliPay implements Pay {
-	private static final String SERVER_URL = "https://openapi.alipay.com/gateway.do";
-	private static final String FORMAT = "json";
-	private static final String CHARSET = "UTF-8";
-	private static final String SIGN_TYPE = "RSA2";
-	private static final String PRODUCT_CODE = "QUICK_MSECURITY_PAY";
 
 	private static final Set<String> retryCode = Set.of(
 			"acq.system_error", "aop.acq.system_error",
@@ -61,13 +62,13 @@ public class AliPay implements Pay {
 		this.configInfo = configInfo;
 		this.client = clientCache.computeIfAbsent(configInfo.getAppId(),
 				appId -> new DefaultAlipayClient(
-						SERVER_URL,
+						AliPayKeys.SERVER_URL,
 						configInfo.getAppId(),
 						configInfo.getPrivateKey(),
-						FORMAT,
-						CHARSET,
+						AliPayKeys.FORMAT,
+						AliPayKeys.CHARSET,
 						configInfo.getPublicKey(),
-						SIGN_TYPE));
+						AliPayKeys.SIGN_TYPE));
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class AliPay implements Pay {
 		model.setTotalAmount(String.valueOf(prepay.getTotalFee() / 100F));
 		model.setPassbackParams(prepay.getPassBackParams());
 		model.setOutTradeNo(prepay.getOutTradeNo());
-		model.setProductCode(PRODUCT_CODE);
+		model.setProductCode(AliPayKeys.PRODUCT_CODE);
 		model.setSubject(prepay.getBody());
 		model.setBody(prepay.getBody());
 
@@ -217,13 +218,16 @@ public class AliPay implements Pay {
 	}
 
 	private static String translatePayStatus(String tradeState) {
-		if ("TRADE_SUCCESS".equals(tradeState)) {
+		if (TRADE_STATUS_SUCCESS.equals(tradeState)) {
 			return Constants.Pay.SUCCESS;
 		}
-		if ("WAIT_BUYER_PAY".equals(tradeState)) {
+		if (TRADE_STATUS_WAIT_BUYER_PAY.equals(tradeState)) {
 			return Constants.Pay.WAIT_PAY;
 		}
-		if ("TRADE_CLOSED".equals(tradeState) || "TRADE_FINISHED".equals(tradeState)) {
+		if (TRADE_STATUS_TRADE_CLOSED.equals(tradeState)) {
+			return Constants.Pay.CLOSED;
+		}
+		if (TRADE_STATUS_TRADE_FINISHED.equals(tradeState)) {
 			return Constants.Pay.CLOSED;
 		}
 		return Constants.Pay.UNKNOWN;

@@ -3,12 +3,15 @@ package com.szw.payment.service;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.alipay.api.internal.util.AlipaySignature;
 import com.szw.payment.api.ResponseCode;
 import com.szw.payment.api.ServiceResponse;
+import com.szw.payment.api.model.CheckAliPaySignRequest;
 import com.szw.payment.api.model.CompletePayRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;
 import com.szw.payment.api.model.PayOrderResponse;
 import com.szw.payment.api.service.PayOrderService;
+import com.szw.payment.common.AliPayKeys;
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.model.PayOrderMessage;
 import com.szw.payment.common.model.Prepay;
@@ -85,6 +88,20 @@ public class PayOrderServiceImpl implements PayOrderService {
 		catch (Exception e) {
 			log.error("completePay", e);
 			return new ServiceResponse<>(ResponseCode.ERROR, "接口异常");
+		}
+	}
+
+	@Override
+	public ServiceResponse<Boolean> checkAliPaySign(CheckAliPaySignRequest request) {
+		try {
+			Config config = configManager.findOneByAppId(request.getAppId());
+			boolean checked = AlipaySignature.rsaCheckV1(request.getCheckParamsMap(),
+					config.getPublicKey(), AliPayKeys.CHARSET, AliPayKeys.SIGN_TYPE);
+			return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", checked);
+		}
+		catch (Exception e) {
+			log.error("checkAliPaySign", e);
+			return new ServiceResponse<>(ResponseCode.ERROR, "接口异常", false);
 		}
 	}
 

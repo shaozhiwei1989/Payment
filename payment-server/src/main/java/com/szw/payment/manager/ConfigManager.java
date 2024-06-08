@@ -31,4 +31,8 @@ public class ConfigManager {
 		return configStore.findById(id);
 	}
 
+	public Config findOneByAppId(String appId) {
+		return configStore.findTopByAppId(appId);
+	}
+
 }

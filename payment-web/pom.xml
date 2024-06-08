@@ -65,6 +65,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.szw.payment</groupId>
+            <artifactId>payment-common</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
         </dependency>
