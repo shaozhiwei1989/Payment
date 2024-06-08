@@ -82,9 +82,7 @@ public class PayOrderController {
 			@RequestBody String body) {
 
 		try {
-			Map<String, Object> bodyMap = GsonUtil.GSON.fromJson(body, TYPE_OF_MAP);
-			String eventType = (String) bodyMap.get(WxPayKeys.EVENT_TYPE);
-			if (!Objects.equals(eventType, WxPayKeys.PAY_SCORE_USER_PAID)) {
+			if (!checkWxpayNoticeEventType(body)) {
 				log.info("非支付成功回调不处理 body:{}", body);
 				// 忽略 非支付成功 的回调，返回成功 避免请求重推
 				return WxPayKeys.RESULT_SUCCESS;
@@ -111,6 +109,12 @@ public class PayOrderController {
 			log.error("wxpayNotice", e);
 			return WxPayKeys.RESULT_FAILURE;
 		}
+	}
+
+	private static boolean checkWxpayNoticeEventType(String body) {
+		Map<String, Object> bodyMap = GsonUtil.GSON.fromJson(body, TYPE_OF_MAP);
+		String eventType = (String) bodyMap.get(WxPayKeys.EVENT_TYPE);
+		return Objects.equals(eventType, WxPayKeys.PAY_SCORE_USER_PAID);
 	}
 
 }
