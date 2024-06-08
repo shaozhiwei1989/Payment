@@ -103,6 +103,8 @@ public final class Converter {
 		message.setPayDoneTime(payOrder.getPayDoneTime());
 		message.setChannel(payOrder.getChannel());
 		message.setTransactionId(payOrder.getTransactionId());
+		message.setTradeId(payOrder.getTradeId());
+		message.setUserId(payOrder.getUserId());
 		return message;
 	}
 

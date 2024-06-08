@@ -33,4 +33,14 @@ public class PayOrderMessage implements Serializable {
 	 */
 	private LocalDateTime payDoneTime;
 
+	/**
+	 * 平台订单id
+	 */
+	private String tradeId;
+
+	/**
+	 * 平台用户id
+	 */
+	private String userId;
+
 }

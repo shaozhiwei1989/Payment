@@ -19,10 +19,10 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 	@Modifying
 	@Query("""
 				update pay_order
-				  set transaction_id = :payOrder.transactionId,
-				      pay_done_time = :payOrder.payDoneTime,
-				      `status` = :payOrder.status
-				where id = :payOrder.id
+				  set transaction_id = :#{#payOrder.transactionId},
+				      pay_done_time = :#{#payOrder.payDoneTime},
+				      `status` = :#{#payOrder.status}
+				where id = :#{#payOrder.id}
 				  and `status` = :fromStatus
 			""")
 	int completePay(PayOrder payOrder, String fromStatus);

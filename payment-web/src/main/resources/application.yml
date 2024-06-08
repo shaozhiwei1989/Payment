@@ -6,6 +6,8 @@ spring:
     name: payment-web
 
 dubbo:
+  consumer:
+    check: false
   application:
     name: payment-web
     qos-enable: false
@@ -14,6 +16,7 @@ dubbo:
     port: 30382
   registry:
     address: zookeeper://127.0.0.1:2181
+    check: false
 
 
 

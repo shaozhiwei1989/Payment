@@ -58,6 +58,8 @@ spring:
       dialect: MYSQL
 
 dubbo:
+  consumer:
+    check: false
   application:
     name: payment-server
     qos-enable: false
@@ -66,6 +68,7 @@ dubbo:
     port: 30381
   registry:
     address: zookeeper://127.0.0.1:2181
+    check: false
 
 mq-topic:
   pay: pay
