@@ -6,6 +6,7 @@ import static com.szw.payment.common.AliPayKeys.TRADE_STATUS_SUCCESS;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -77,12 +78,20 @@ public class PayOrderController {
 			String outTradeNo = paramsMap.get(AliPayKeys.OUT_TRADE_NO);
 			String transactionId = paramsMap.get(AliPayKeys.TRADE_NO);
 			String gmtPayment = paramsMap.get(AliPayKeys.GMT_PAYMENT);
-			LocalDateTime payTime = LocalDateTime.parse(gmtPayment, formatter);
+
+			LocalDateTime payTime;
+			try {
+				payTime = LocalDateTime.parse(gmtPayment, formatter);
+			}
+			catch (DateTimeParseException e) {
+				payTime = LocalDateTime.now();
+				log.error("", e);
+			}
 
 			CompletePayRequest request = new CompletePayRequest();
+			request.setPayTime(payTime);
 			request.setOutTradeNo(outTradeNo);
 			request.setTransactionId(transactionId);
-			request.setPayTime(payTime);
 			ServiceResponse<Boolean> response = payOrderService.completePay(request);
 			return Objects.equals(response.getData(), true) ? RESULT_SUCCESS : RESULT_FAILURE;
 		}
