@@ -31,7 +31,7 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 	@Query("""
 				update pay_order
 				  set balance = balance - :amount,
-				      refund_frozen_Amount = refund_frozen_Amount + :amount
+				      refund_frozen_amount = refund_frozen_amount + :amount
 				where id = :id
 				  and balance >= :amount
 			""")
@@ -40,7 +40,7 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 	@Modifying
 	@Query("""
 				update pay_order
-				  set refund_frozen_Amount = refund_frozen_Amount - :amount,
+				  set refund_frozen_amount = refund_frozen_amount - :amount,
 				      refund_amount = refund_amount + :amount
 				where id = :id
 				  and refund_frozen_Amount >= :amount
@@ -50,7 +50,7 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 	@Modifying
 	@Query("""
 				update pay_order
-				  set refund_frozen_Amount = refund_frozen_Amount - :amount,
+				  set refund_frozen_amount = refund_frozen_amount - :amount,
 				      balance = balance + :amount
 				where id = :id
 				  and refund_frozen_Amount >= :amount
