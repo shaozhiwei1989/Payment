@@ -115,7 +115,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 			if (tradeState != Transaction.TradeStateEnum.SUCCESS) {
 				log.info("非支付成功状态:transaction:{}", GsonUtil.GSON.toJson(transaction));
 				// 忽略 非支付成功状态 的回调，返回成功 避免请求重推
-				return new ServiceResponse<>(ResponseCode.ERROR, "非支付成功状态", true);
+				return new ServiceResponse<>(ResponseCode.SUCCESS, "非支付成功状态", true);
 			}
 
 			String outTradeNo = transaction.getOutTradeNo();
