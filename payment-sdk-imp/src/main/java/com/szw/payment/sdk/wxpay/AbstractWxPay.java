@@ -89,7 +89,7 @@ public abstract class AbstractWxPay implements Pay {
 		RefundService service = new RefundService.Builder().config(wxConfig).build();
 		Refund response = service.queryByOutRefundNo(request);
 
-		String refundStatus = translateRefundStatus(response.getStatus().name());
+		String refundStatus = translateRefundStatus(response.getStatus());
 		return RefundQueryResponse.builder()
 				.outRefundNo(response.getOutRefundNo())
 				.transactionId(response.getTransactionId())
@@ -104,27 +104,21 @@ public abstract class AbstractWxPay implements Pay {
 		return LocalDateTime.parse(dateStr, WxPayKeys.formatter);
 	}
 
-	public static String translatePayStatus(String tradeState) {
-		if (Transaction.TradeStateEnum.SUCCESS.name().equals(tradeState)) {
-			return Constants.Pay.SUCCESS;
-		}
-		if (Transaction.TradeStateEnum.NOTPAY.name().equals(tradeState)) {
-			return Constants.Pay.WAIT_PAY;
-		}
-		if (Transaction.TradeStateEnum.CLOSED.name().equals(tradeState)) {
-			return Constants.Pay.CLOSED;
-		}
-		return Constants.Pay.UNKNOWN;
+	public static String translatePayStatus(Transaction.TradeStateEnum tradeState) {
+		return switch (tradeState) {
+			case SUCCESS -> Constants.Pay.SUCCESS;
+			case NOTPAY -> Constants.Pay.WAIT_PAY;
+			case CLOSED -> Constants.Pay.CLOSED;
+			default -> Constants.Pay.UNKNOWN;
+		};
 	}
 
-	public static String translateRefundStatus(String status) {
-		if (Status.SUCCESS.name().equals(status)) {
-			return Constants.Refund.SUCCESS;
-		}
-		if (Status.PROCESSING.name().equals(status)) {
-			return Constants.Refund.PROCESSING;
-		}
-		return Constants.Refund.ERROR;
+	public static String translateRefundStatus(Status status) {
+		return switch (status) {
+			case SUCCESS -> Constants.Refund.SUCCESS;
+			case PROCESSING -> Constants.Refund.PROCESSING;
+			default -> Constants.Refund.ERROR;
+		};
 	}
 
 }

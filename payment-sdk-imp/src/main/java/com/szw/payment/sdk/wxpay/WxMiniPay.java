@@ -72,7 +72,7 @@ public class WxMiniPay extends AbstractWxPay implements Pay {
 		JsapiService service = new JsapiService.Builder().config(wxConfig).build();
 		Transaction transaction = service.queryOrderById(request);
 
-		String tradeState = translatePayStatus(transaction.getTradeState().name());
+		String tradeState = translatePayStatus(transaction.getTradeState());
 		LocalDateTime successTime = convertStrToLocalDateTime(transaction.getSuccessTime());
 		return PayOrderQueryResponse.builder()
 				.outTradeNo(transaction.getOutTradeNo())

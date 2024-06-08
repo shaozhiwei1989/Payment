@@ -218,19 +218,13 @@ public class AliPay implements Pay {
 	}
 
 	private static String translatePayStatus(String tradeState) {
-		if (TRADE_STATUS_SUCCESS.equals(tradeState)) {
-			return Constants.Pay.SUCCESS;
-		}
-		if (TRADE_STATUS_WAIT_BUYER_PAY.equals(tradeState)) {
-			return Constants.Pay.WAIT_PAY;
-		}
-		if (TRADE_STATUS_TRADE_CLOSED.equals(tradeState)) {
-			return Constants.Pay.CLOSED;
-		}
-		if (TRADE_STATUS_TRADE_FINISHED.equals(tradeState)) {
-			return Constants.Pay.CLOSED;
-		}
-		return Constants.Pay.UNKNOWN;
+		return switch (tradeState) {
+			case TRADE_STATUS_SUCCESS -> Constants.Pay.SUCCESS;
+			case TRADE_STATUS_WAIT_BUYER_PAY -> Constants.Pay.WAIT_PAY;
+			case TRADE_STATUS_TRADE_CLOSED, TRADE_STATUS_TRADE_FINISHED ->
+					Constants.Pay.CLOSED;
+			default -> Constants.Pay.UNKNOWN;
+		};
 	}
 
 	private static String translateRefundStatus(AlipayTradeFastpayRefundQueryResponse response) {

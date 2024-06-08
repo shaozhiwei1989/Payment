@@ -66,7 +66,7 @@ public class WxAppPay extends AbstractWxPay implements Pay {
 		AppService service = new AppService.Builder().config(wxConfig).build();
 		Transaction transaction = service.queryOrderById(request);
 
-		String tradeState = translatePayStatus(transaction.getTradeState().name());
+		String tradeState = translatePayStatus(transaction.getTradeState());
 		LocalDateTime successTime = convertStrToLocalDateTime(transaction.getSuccessTime());
 		return PayOrderQueryResponse.builder()
 				.outTradeNo(transaction.getOutTradeNo())
