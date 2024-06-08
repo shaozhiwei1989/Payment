@@ -12,6 +12,8 @@ import com.szw.payment.entity.Config;
 import com.szw.payment.sdk.Pay;
 import com.szw.payment.sdk.PayBuilder;
 import com.szw.payment.sdk.PayExceptionHandler;
+import com.szw.payment.sdk.wxpay.AbstractWxPay;
+import com.wechat.pay.java.core.notification.NotificationConfig;
 import jakarta.inject.Named;
 
 @Named
@@ -40,6 +42,15 @@ public class PayFacade {
 		ConfigInfo configInfo = Converter.buildConfigInfo(config);
 		Pay pay = PayBuilder.create().config(configInfo).build();
 		return pay.queryRefundOrder(refund);
+	}
+
+	public NotificationConfig getWxNotificationConfig(Config config) {
+		ConfigInfo configInfo = Converter.buildConfigInfo(config);
+		Pay pay = PayBuilder.create().config(configInfo).build();
+		if (pay instanceof AbstractWxPay wxPay) {
+			return (NotificationConfig) wxPay.getWxConfig();
+		}
+		throw new UnsupportedOperationException("支付类型错误 channel:" + config.getChannel());
 	}
 
 }

@@ -1,10 +1,14 @@
 package com.szw.payment.common;
 
+import java.time.format.DateTimeFormatter;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class AliPayKeys {
+	public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 	public static final String SERVER_URL = "https://openapi.alipay.com/gateway.do";
 
 	public static final String FORMAT = "json";

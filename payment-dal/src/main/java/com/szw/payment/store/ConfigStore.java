@@ -14,6 +14,6 @@ public interface ConfigStore extends Repository<Config, Long> {
 
 	Config findById(Long id);
 
-	Config findTopByAppId(String appId);
+	List<Config> findByAppId(String appId);
 
 }

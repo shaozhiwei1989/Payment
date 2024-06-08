@@ -1,6 +1,7 @@
 package com.szw.payment.manager;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import com.szw.payment.entity.Config;
@@ -32,7 +33,21 @@ public class ConfigManager {
 	}
 
 	public Config findOneByAppId(String appId) {
-		return configStore.findTopByAppId(appId);
+		List<Config> list = configStore.findByAppId(appId);
+		if (list == null || list.isEmpty()) {
+			throw new RuntimeException("缺少对应的支付配置");
+		}
+		return list.getFirst();
+	}
+
+	public Config findByAppIdAndMchId(String appId, String mchId) {
+		List<Config> configList = configStore.findByAppId(appId);
+		for (Config config : configList) {
+			if (Objects.equals(config.getMchId(), mchId)) {
+				return config;
+			}
+		}
+		throw new RuntimeException("缺少对应的支付配置");
 	}
 
 }

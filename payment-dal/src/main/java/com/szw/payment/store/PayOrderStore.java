@@ -1,7 +1,5 @@
 package com.szw.payment.store;
 
-import java.time.LocalDateTime;
-
 import com.szw.payment.entity.PayOrder;
 
 import org.springframework.data.jdbc.repository.query.Modifying;
@@ -21,15 +19,13 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 	@Modifying
 	@Query("""
 				update pay_order
-				  set transaction_id = :transactionId,
-				      pay_done_time = :payDoneTime,
-				      `status` = :toStatus
-				where id = :id
+				  set transaction_id = :payOrder.transactionId,
+				      pay_done_time = :payOrder.payDoneTime,
+				      `status` = :payOrder.status
+				where id = :payOrder.id
 				  and `status` = :fromStatus
 			""")
-	int completePay(Long id, String fromStatus, String toStatus,
-			String transactionId, LocalDateTime payDoneTime);
-
+	int completePay(PayOrder payOrder, String fromStatus);
 
 	@Modifying
 	@Query("""

@@ -1,28 +1,28 @@
 package com.szw.payment.controller;
 
-import static com.szw.payment.common.AliPayKeys.RESULT_FAILURE;
-import static com.szw.payment.common.AliPayKeys.RESULT_SUCCESS;
-import static com.szw.payment.common.AliPayKeys.TRADE_STATUS_SUCCESS;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 
+import com.google.gson.reflect.TypeToken;
 import com.szw.payment.Result;
 import com.szw.payment.ResultCode;
 import com.szw.payment.api.ServiceResponse;
-import com.szw.payment.api.model.CheckAliPaySignRequest;
-import com.szw.payment.api.model.CompletePayRequest;
+import com.szw.payment.api.model.CompleteForAlipayRequest;
+import com.szw.payment.api.model.CompleteForWxpayRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;
 import com.szw.payment.api.model.PayOrderResponse;
 import com.szw.payment.api.service.PayOrderService;
 import com.szw.payment.bean.PrepayBean;
 import com.szw.payment.common.AliPayKeys;
+import com.szw.payment.common.WxPayKeys;
+import com.szw.payment.common.utils.GsonUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pay")
 @Slf4j(topic = "running")
 public class PayOrderController {
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private static final Type TYPE_OF_MAP = new TypeToken<Map<String, Object>>() {}.getType();
 
 	@DubboReference
 	private PayOrderService payOrderService;
@@ -63,50 +63,54 @@ public class PayOrderController {
 	@RequestMapping("/alipay/notice")
 	public String alipayNotice(@RequestParam Map<String, String> paramsMap) {
 		try {
-			if (!checkAliPaySign(paramsMap)) {
-				log.info("签名验证失败:map {}", paramsMap);
-				return RESULT_FAILURE;
-			}
-
-			String tradeStatus = paramsMap.get(AliPayKeys.TRADE_STATUS);
-			if (!TRADE_STATUS_SUCCESS.equals(tradeStatus)) {
-				log.info("非支付成功状态: map {}", paramsMap);
-				// 忽略 非支付成功状态 的回调，返回成功 避免请求重推
-				return RESULT_SUCCESS;
-			}
-
-			String outTradeNo = paramsMap.get(AliPayKeys.OUT_TRADE_NO);
-			String transactionId = paramsMap.get(AliPayKeys.TRADE_NO);
-			String gmtPayment = paramsMap.get(AliPayKeys.GMT_PAYMENT);
-
-			LocalDateTime payTime;
-			try {
-				payTime = LocalDateTime.parse(gmtPayment, formatter);
-			}
-			catch (DateTimeParseException e) {
-				payTime = LocalDateTime.now();
-				log.error("", e);
-			}
-
-			CompletePayRequest request = new CompletePayRequest();
-			request.setPayTime(payTime);
-			request.setOutTradeNo(outTradeNo);
-			request.setTransactionId(transactionId);
-			ServiceResponse<Boolean> response = payOrderService.completePay(request);
-			return Objects.equals(response.getData(), true) ? RESULT_SUCCESS : RESULT_FAILURE;
+			CompleteForAlipayRequest request = new CompleteForAlipayRequest();
+			request.setParamsMap(paramsMap);
+			ServiceResponse<Boolean> response = payOrderService.completeForAlipay(request);
+			boolean isTrue = Objects.equals(response.getData(), true);
+			return isTrue ? AliPayKeys.RESULT_SUCCESS : AliPayKeys.RESULT_FAILURE;
 		}
 		catch (Exception e) {
 			log.error("alipayNotice", e);
-			return RESULT_FAILURE;
+			return AliPayKeys.RESULT_FAILURE;
 		}
 	}
 
-	private boolean checkAliPaySign(Map<String, String> paramsMap) {
-		CheckAliPaySignRequest request = new CheckAliPaySignRequest();
-		request.setAppId(paramsMap.get(AliPayKeys.APP_ID));
-		request.setCheckParamsMap(paramsMap);
-		ServiceResponse<Boolean> response = payOrderService.checkAliPaySign(request);
-		return Objects.equals(response.getData(), true);
+	@RequestMapping("/wxpay/notice/{appId}/{mchId}")
+	public String wxpayNotice(HttpServletRequest httpServletRequest,
+			@PathVariable("appId") String appId,
+			@PathVariable("mchId") String mchId,
+			@RequestBody String body) {
+
+		try {
+			Map<String, Object> bodyMap = GsonUtil.GSON.fromJson(body, TYPE_OF_MAP);
+			String eventType = (String) bodyMap.get(WxPayKeys.EVENT_TYPE);
+			if (!Objects.equals(eventType, WxPayKeys.PAY_SCORE_USER_PAID)) {
+				log.info("非支付成功回调不处理 body:{}", body);
+				// 忽略 非支付成功 的回调，返回成功 避免请求重推
+				return WxPayKeys.RESULT_SUCCESS;
+			}
+
+			String nonce = httpServletRequest.getHeader(WxPayKeys.NONCE);
+			String signature = httpServletRequest.getHeader(WxPayKeys.SIGNATURE);
+			String timeStamp = httpServletRequest.getHeader(WxPayKeys.TIMESTAMP);
+			String serialNumber = httpServletRequest.getHeader(WxPayKeys.SERIAL);
+
+			CompleteForWxpayRequest request = new CompleteForWxpayRequest();
+			request.setAppId(appId);
+			request.setMchId(mchId);
+			request.setBody(body);
+			request.setNonce(nonce);
+			request.setSignature(signature);
+			request.setTimestamp(timeStamp);
+			request.setSerialNumber(serialNumber);
+			ServiceResponse<Boolean> response = payOrderService.completeForWxPay(request);
+			boolean isTrue = Objects.equals(response.getData(), true);
+			return isTrue ? WxPayKeys.RESULT_SUCCESS : WxPayKeys.RESULT_FAILURE;
+		}
+		catch (Exception e) {
+			log.error("wxpayNotice", e);
+			return WxPayKeys.RESULT_FAILURE;
+		}
 	}
 
 }

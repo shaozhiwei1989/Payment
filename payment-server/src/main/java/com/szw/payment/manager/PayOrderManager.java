@@ -3,15 +3,19 @@ package com.szw.payment.manager;
 import java.time.LocalDateTime;
 
 import com.szw.payment.common.Constants;
+import com.szw.payment.common.model.PayOrderMessage;
 import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.model.PrepayResponse;
 import com.szw.payment.converter.Converter;
 import com.szw.payment.entity.Config;
 import com.szw.payment.entity.PayOrder;
 import com.szw.payment.facade.PayFacade;
+import com.szw.payment.producer.MessageProducer;
 import com.szw.payment.store.PayOrderStore;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+
+import org.springframework.beans.factory.annotation.Value;
 
 @Named
 public class PayOrderManager {
@@ -21,6 +25,13 @@ public class PayOrderManager {
 
 	@Inject
 	private PayOrderStore payOrderStore;
+
+	@Inject
+	@Named("kafka_producer")
+	private MessageProducer<PayOrderMessage> messageProducer;
+
+	@Value("${mq-topic.pay}")
+	private String topic;
 
 
 	public PayOrder createPayOrder(Config config, Prepay prepay) {
@@ -32,7 +43,7 @@ public class PayOrderManager {
 	}
 
 	public boolean completePay(String outTradeNo, String transactionId, LocalDateTime payTime) {
-		PayOrder payOrder = findByOutTradeNo(outTradeNo);
+		PayOrder payOrder = payOrderStore.findByOutTradeNo(outTradeNo);
 		if (payOrder == null) {
 			throw new RuntimeException("outTradeNo不存在#" + outTradeNo);
 		}
@@ -44,17 +55,22 @@ public class PayOrderManager {
 					String.format("支付单不是未付款状态# outTradeNo:%s  status:%s",
 							outTradeNo, payOrder.getStatus()));
 		}
-		int rows = payOrderStore.completePay(payOrder.getId(),
-				Constants.Pay.WAIT_PAY, Constants.Pay.SUCCESS, transactionId, payTime);
-		return rows > 0;
+
+		payOrder.setPayDoneTime(payTime);
+		payOrder.setTransactionId(transactionId);
+		payOrder.setStatus(Constants.Pay.SUCCESS);
+		int rows = payOrderStore.completePay(payOrder, Constants.Pay.WAIT_PAY);
+
+		boolean updated = (rows > 0);
+		if (updated) {
+			PayOrderMessage message = Converter.buildPayOrderMessage(payOrder);
+			messageProducer.send(this.topic, Constants.Tag.SUCCESS, message);
+		}
+		return updated;
 	}
 
 	public PayOrder findByTradeIdAndChannel(String tradeId, String channel) {
 		return payOrderStore.findByTradeIdAndChannel(tradeId, channel);
-	}
-
-	public PayOrder findByOutTradeNo(String outTradeNo) {
-		return payOrderStore.findByOutTradeNo(outTradeNo);
 	}
 
 }

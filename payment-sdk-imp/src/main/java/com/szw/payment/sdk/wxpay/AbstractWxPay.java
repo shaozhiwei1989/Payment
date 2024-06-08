@@ -1,12 +1,12 @@
 package com.szw.payment.sdk.wxpay;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.szw.payment.common.Constants;
+import com.szw.payment.common.WxPayKeys;
 import com.szw.payment.common.model.ConfigInfo;
 import com.szw.payment.common.model.RefundCreateResponse;
 import com.szw.payment.common.model.RefundQueryResponse;
@@ -23,15 +23,17 @@ import com.wechat.pay.java.service.refund.model.CreateRequest;
 import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
 import com.wechat.pay.java.service.refund.model.Status;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
+@Getter
 public abstract class AbstractWxPay implements Pay {
 	private static final Map<String /* 商户号id */, Config> wxConfigCache = new ConcurrentHashMap<>();
 	private static final Set<String> retryCode = Set.of("NOT_ENOUGH", "FREQUENCY_LIMITED", "SYSTEM_ERROR");
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
 
 	protected ConfigInfo configInfo;
 	protected Config wxConfig;
+
 
 	@Override
 	public final void initConfig(ConfigInfo configInfo) throws Exception {
@@ -99,7 +101,7 @@ public abstract class AbstractWxPay implements Pay {
 		if (StringUtils.isBlank(dateStr)) {
 			return null;
 		}
-		return LocalDateTime.parse(dateStr, formatter);
+		return LocalDateTime.parse(dateStr, WxPayKeys.formatter);
 	}
 
 	public static String translatePayStatus(String tradeState) {
