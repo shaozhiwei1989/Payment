@@ -126,13 +126,10 @@ public class PayOrderServiceImpl implements PayOrderService {
 			boolean ok = payOrderManager.completePay(outTradeNo, transactionId, payTime);
 			return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", ok);
 		}
-		catch (ValidationException e) {
-			log.error("", e);
-			return new ServiceResponse<>(ResponseCode.ERROR, "签名验证失败", false);
-		}
 		catch (Exception e) {
 			log.error("", e);
-			return new ServiceResponse<>(ResponseCode.ERROR, "接口异常");
+			String message = (e instanceof ValidationException) ? "签名验证失败" : "接口异常";
+			return new ServiceResponse<>(ResponseCode.ERROR, message);
 		}
 	}
 
