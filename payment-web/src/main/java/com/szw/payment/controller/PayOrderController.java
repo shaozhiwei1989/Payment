@@ -18,13 +18,13 @@ import com.szw.payment.bean.PrepayBean;
 import com.szw.payment.common.AliPayKeys;
 import com.szw.payment.common.WxPayKeys;
 import com.szw.payment.common.utils.GsonUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,10 +76,13 @@ public class PayOrderController {
 	}
 
 	@RequestMapping("/wxpay/notice/{appId}/{mchId}")
-	public String wxpayNotice(HttpServletRequest httpServletRequest,
+	public String wxpayNotice(@RequestBody String body,
 			@PathVariable("appId") String appId,
 			@PathVariable("mchId") String mchId,
-			@RequestBody String body) {
+			@RequestHeader(WxPayKeys.NONCE) String nonce,
+			@RequestHeader(WxPayKeys.SIGNATURE) String signature,
+			@RequestHeader(WxPayKeys.TIMESTAMP) String timeStamp,
+			@RequestHeader(WxPayKeys.SERIAL) String serialNumber) {
 
 		try {
 			if (!checkWxpayNoticeEventType(body)) {
@@ -87,11 +90,6 @@ public class PayOrderController {
 				// 忽略 非支付成功 的回调，返回成功 避免请求重推
 				return WxPayKeys.RESULT_SUCCESS;
 			}
-
-			String nonce = httpServletRequest.getHeader(WxPayKeys.NONCE);
-			String signature = httpServletRequest.getHeader(WxPayKeys.SIGNATURE);
-			String timeStamp = httpServletRequest.getHeader(WxPayKeys.TIMESTAMP);
-			String serialNumber = httpServletRequest.getHeader(WxPayKeys.SERIAL);
 
 			CompleteForWxpayRequest request = new CompleteForWxpayRequest();
 			request.setAppId(appId);
