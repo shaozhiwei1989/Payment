@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: payment-data-archive
+
+  ## datasource
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/payment?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+#      username: root
+#      password: 123456
+      database: payment
+      auto-index-creation: false
+    jdbc:
+      dialect: MYSQL
+
+elasticjob:
+  regCenter:
+    serverLists: 127.0.0.1:2181
+    namespace: elastic-job-payment
+  jobs:
+    archive_task:
+      elasticJobClass: com.szw.payment.archive.task.ArchiveTask
+      cron: 0 0 1 * * ?
+      timeZone: GMT+08:00
+      shardingTotalCount: 2
+
+
+archive-time: 365
+
+
+
+
+
+
+

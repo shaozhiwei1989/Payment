@@ -21,6 +21,7 @@
 		<module>payment-dal</module>
 		<module>payment-common</module>
         <module>payment-sdk-imp</module>
+        <module>payment-data-archive</module>
     </modules>
 	<properties>
 		<java.version>21</java.version>
@@ -135,6 +136,12 @@
 				<groupId>org.apache.curator</groupId>
 				<artifactId>curator-x-discovery</artifactId>
 				<version>5.6.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.shardingsphere.elasticjob</groupId>
+				<artifactId>elasticjob-lite-spring-boot-starter</artifactId>
+				<version>3.0.4</version>
 			</dependency>
 
 		</dependencies>
