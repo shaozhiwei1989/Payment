@@ -18,7 +18,6 @@
 		<module>payment-api</module>
 		<module>payment-server</module>
 		<module>payment-web</module>
-		<module>payment-dal</module>
 		<module>payment-common</module>
         <module>payment-sdk-imp</module>
         <module>payment-data-archive</module>
@@ -83,12 +82,6 @@
 				<groupId>org.apache.curator</groupId>
 				<artifactId>curator-framework</artifactId>
 				<version>5.6.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.szw.payment</groupId>
-				<artifactId>payment-dal</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>

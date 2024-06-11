@@ -78,11 +78,6 @@
 
         <dependency>
             <groupId>com.szw.payment</groupId>
-            <artifactId>payment-dal</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.szw.payment</groupId>
             <artifactId>payment-sdk-imp</artifactId>
         </dependency>
 
