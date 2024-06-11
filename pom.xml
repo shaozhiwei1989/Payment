@@ -20,7 +20,7 @@
 		<module>payment-web</module>
 		<module>payment-common</module>
         <module>payment-sdk-imp</module>
-        <module>payment-data-archive</module>
+        <module>payment-archive</module>
     </modules>
 	<properties>
 		<java.version>21</java.version>

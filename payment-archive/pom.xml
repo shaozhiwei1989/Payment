@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>payment-data-archive</artifactId>
+    <artifactId>payment-archive</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
