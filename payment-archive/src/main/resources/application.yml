@@ -1,6 +1,6 @@
 spring:
   application:
-    name: payment-data-archive
+    name: payment-archive
 
   ## datasource
   datasource:
@@ -20,6 +20,7 @@ spring:
     jdbc:
       dialect: MYSQL
 
+## elasticjob
 elasticjob:
   regCenter:
     serverLists: 127.0.0.1:2181
@@ -31,9 +32,8 @@ elasticjob:
       timeZone: GMT+08:00
       shardingTotalCount: 2
 
-
+## 归档时间
 archive-time: 365
-
 
 
 
