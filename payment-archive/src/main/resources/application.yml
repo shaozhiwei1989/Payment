@@ -28,7 +28,7 @@ elasticjob:
   jobs:
     archive_task:
       elasticJobClass: com.szw.payment.archive.task.ArchiveTask
-      cron: 0 0 1 * * ?
+      cron: 0 0 3 * * ?
       timeZone: GMT+08:00
       shardingTotalCount: 2
 
