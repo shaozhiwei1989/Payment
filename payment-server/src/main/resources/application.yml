@@ -81,6 +81,7 @@ elasticjob:
       cron: 0 0/1 * * * ?
       timeZone: GMT+08:00
       shardingTotalCount: 1
+      overwrite: true
 
 mq-topic:
   pay: pay

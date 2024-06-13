@@ -67,15 +67,17 @@ public class Test1 {
 
 	@Test
 	public void test4() {
-		CreateRefundOrderRequest request = new CreateRefundOrderRequest();
-		request.setAmount(30L);
-		request.setIdempotentKey("test4_1");
-		request.setChannel("mock_pay");
-		request.setTradeId("test_trade_id_1");
-		request.setUserId("test_user_id_1");
-		request.setDescription("test4_1_desc");
-		request.getPassBackParamMap().put("test_2", "test_2");
-		refundOrderService.createRefundOrder(request);
+		for (int i = 10; i < 15; i++) {
+			CreateRefundOrderRequest request = new CreateRefundOrderRequest();
+			request.setAmount(10L);
+			request.setIdempotentKey(String.format("test%s_1", i));
+			request.setChannel("mock_pay");
+			request.setTradeId("test_trade_id_1");
+			request.setUserId("test_user_id_1");
+			request.setDescription("test5_1_desc");
+			request.getPassBackParamMap().put("test_5", "test_5");
+			refundOrderService.createRefundOrder(request);
+		}
 	}
 
 	@Test

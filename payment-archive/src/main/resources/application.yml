@@ -31,6 +31,7 @@ elasticjob:
       cron: 0 0 3 * * ?
       timeZone: GMT+08:00
       shardingTotalCount: 2
+      overwrite: true
 
 ## 归档时间
 archive-time: 365

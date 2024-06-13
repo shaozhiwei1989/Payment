@@ -12,8 +12,6 @@ import com.szw.payment.common.model.Refund;
 import com.szw.payment.common.model.RefundCreateResponse;
 import com.szw.payment.common.model.RefundQueryResponse;
 import com.szw.payment.sdk.Pay;
-import com.szw.payment.sdk.exception.PayErrCode;
-import com.szw.payment.sdk.exception.PayException;
 
 public class MockPay implements Pay {
 
@@ -32,12 +30,11 @@ public class MockPay implements Pay {
 
 	@Override
 	public RefundCreateResponse createRefund(Refund refund) {
-		throw new PayException(PayErrCode.RETRY_LATER, "aaaa");
-//		return RefundCreateResponse.builder()
-//				.transactionId(refund.getTransactionId())
-//				.outRefundNo(refund.getOutRefundNo())
-//				.waitCallBack(true)
-//				.build();
+		return RefundCreateResponse.builder()
+				.transactionId(refund.getTransactionId())
+				.outRefundNo(refund.getOutRefundNo())
+				.waitCallBack(true)
+				.build();
 	}
 
 	@Override
