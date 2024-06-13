@@ -23,6 +23,7 @@ import com.szw.payment.common.utils.UUIDUtil;
 import com.szw.payment.entity.Config;
 import com.szw.payment.entity.PayOrder;
 import com.szw.payment.entity.RefundOrder;
+import com.szw.payment.entity.RefundTask;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -45,7 +46,6 @@ public final class Converter {
 		configInfo.setPrivateKey(config.getPrivateKey());
 		return configInfo;
 	}
-
 
 	public static PayOrder buildPayOrder(Config config, Prepay prepay, PrepayResponse response) {
 		PayOrder payOrder = new PayOrder();
@@ -172,8 +172,16 @@ public final class Converter {
 		if (map != null && !map.isEmpty()) {
 			message.getPassBackParamMap().putAll(map);
 		}
-
 		return message;
+	}
+
+	public static RefundTask buildRefundTask(RefundOrder refundOrder) {
+		RefundTask refundTask = new RefundTask();
+		refundTask.setRefundOrderId(refundOrder.getId());
+		refundTask.setExecTime(LocalDateTime.now());
+		refundTask.setUserId(refundOrder.getUserId());
+		refundTask.setTradeId(refundOrder.getTradeId());
+		return refundTask;
 	}
 
 }

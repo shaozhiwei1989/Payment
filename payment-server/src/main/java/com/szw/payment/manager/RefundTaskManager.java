@@ -2,6 +2,7 @@ package com.szw.payment.manager;
 
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import com.szw.payment.common.Constants;
@@ -45,6 +46,10 @@ public class RefundTaskManager {
 	@Inject
 	private PayFacade payFacade;
 
+
+	public List<RefundTask> scanTasks(Long currentId, int shardTotal, int shardItem) {
+		return refundTaskStore.findTop50Tasks(currentId, shardTotal, shardItem);
+	}
 
 	public void executeRefundTask(RefundTask refundTask) {
 		RefundOrder refundOrder = refundOrderManager.findById(refundTask.getRefundOrderId());

@@ -70,6 +70,18 @@ dubbo:
     address: zookeeper://127.0.0.1:2181
     check: false
 
+## elasticjob
+elasticjob:
+  regCenter:
+    serverLists: 127.0.0.1:2181
+    namespace: elastic-job-payment
+  jobs:
+    execute_refund_task:
+      elasticJobClass: com.szw.payment.task.ExecuteRefundTask
+      cron: 0 0/1 * * * ?
+      timeZone: GMT+08:00
+      shardingTotalCount: 1
+
 mq-topic:
   pay: pay
   refund: refund

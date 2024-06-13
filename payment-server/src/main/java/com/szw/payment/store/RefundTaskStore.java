@@ -15,7 +15,18 @@ public interface RefundTaskStore extends Repository<RefundTask, Long> {
 
 	void deleteById(Long id);
 
-	List<RefundTask> findTop50ByExecTimeLessThanEqualOrderByIdAsc(LocalDateTime time);
+	void deleteByRefundOrderId(Long refundOrderId);
+
+	@Query("""
+				select *
+				 from refund_task
+				where id > :currentId
+				 and exec_time <= now()
+				 and mod(id,:shardTotal) = :shardItem
+				order by id asc
+				 limit 50
+			""")
+	List<RefundTask> findTop50Tasks(long currentId, int shardTotal, int shardItem);
 
 	@Modifying
 	@Query("update refund_task set exec_time = :execTime where refund_order_id = :refundOrderId")

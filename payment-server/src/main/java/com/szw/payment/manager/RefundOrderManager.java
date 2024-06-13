@@ -10,10 +10,9 @@ import com.szw.payment.common.model.RefundOrderMessage;
 import com.szw.payment.converter.Converter;
 import com.szw.payment.entity.PayOrder;
 import com.szw.payment.entity.RefundOrder;
+import com.szw.payment.entity.RefundTask;
 import com.szw.payment.exception.UpdateDataException;
-import com.szw.payment.facade.PayFacade;
 import com.szw.payment.producer.MessageProducer;
-import com.szw.payment.store.ConfigStore;
 import com.szw.payment.store.PayOrderStore;
 import com.szw.payment.store.RefundOrderStore;
 import com.szw.payment.store.RefundTaskStore;
@@ -37,13 +36,7 @@ public class RefundOrderManager {
 	private RefundOrderStore refundOrderStore;
 
 	@Inject
-	private ConfigStore configStore;
-
-	@Inject
 	private RefundTaskStore refundTaskStore;
-
-	@Inject
-	private PayFacade payFacade;
 
 	@Inject
 	@Named("kafka_producer")
@@ -63,6 +56,9 @@ public class RefundOrderManager {
 		if (i > 0) {
 			RefundOrder refundOrder = Converter.buildRefundOrder(payOrder, refund);
 			refundOrderStore.save(refundOrder);
+
+			RefundTask refundTask = Converter.buildRefundTask(refundOrder);
+			refundTaskStore.save(refundTask);
 		}
 	}
 
@@ -73,11 +69,14 @@ public class RefundOrderManager {
 			return;
 		}
 
-		int i; // 数据库更新行数
-		int fromStatus = refundOrder.getStatus();
+		Long amount = refundOrder.getAmount();
+		Integer fromStatus = refundOrder.getStatus();
+		Long payOrderId = refundOrder.getPayOrderId();
 		LocalDateTime endTime = Optional.ofNullable(doneTime).orElse(LocalDateTime.now());
+
+		int i; // 数据库更新行数
 		if (success) {
-			i = payOrderStore.completeRefund(refundOrder.getPayOrderId(), refundOrder.getAmount());
+			i = payOrderStore.completeRefund(payOrderId, amount);
 			if (i > 0) {
 				refundOrder.setRefundFailDesc(null);
 				refundOrder.setRefundEndTime(endTime);
@@ -86,7 +85,7 @@ public class RefundOrderManager {
 			}
 		}
 		else {
-			i = payOrderStore.rollbackRefund(refundOrder.getPayOrderId(), refundOrder.getAmount());
+			i = payOrderStore.rollbackRefund(payOrderId, amount);
 			if (i > 0) {
 				refundOrder.setRefundEndTime(endTime);
 				refundOrder.setRefundFailDesc(failDesc);
@@ -99,13 +98,21 @@ public class RefundOrderManager {
 			throw new UpdateDataException("数据更新异常#outRefundNo:" + outRefundNo);
 		}
 
-		// 事务提交后 发送消息
+		afterCompleteRefund(refundOrder);
+	}
+
+	private void afterCompleteRefund(RefundOrder refundOrder) {
 		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
 			@Override
 			public void afterCommit() {
+				RefundStatusEnum statusEnum = RefundStatusEnum.fromCode(refundOrder.getStatus());
+				boolean success = (statusEnum == RefundStatusEnum.REFUND_SUCCESS);
+
 				String tag = success ? Constants.Tag.SUCCESS : Constants.Tag.ERROR;
 				RefundOrderMessage message = Converter.buildRefundOrderMessage(refundOrder);
 				messageProducer.send(topic, tag, message);
+
+				refundTaskStore.deleteByRefundOrderId(refundOrder.getId());
 			}
 		});
 	}
