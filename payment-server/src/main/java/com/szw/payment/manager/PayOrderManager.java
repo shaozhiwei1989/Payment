@@ -64,7 +64,7 @@ public class PayOrderManager {
 		boolean updated = (rows > 0);
 		if (updated) {
 			PayOrderMessage message = Converter.buildPayOrderMessage(payOrder);
-			messageProducer.send(this.topic, Constants.Tag.SUCCESS, message);
+			messageProducer.send(topic, Constants.Tag.SUCCESS, message);
 		}
 		return updated;
 	}

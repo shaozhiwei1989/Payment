@@ -1,23 +1,34 @@
 package com.szw.payment.converter;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.util.Map;
 
+import com.google.gson.reflect.TypeToken;
+import com.szw.payment.api.model.CreateRefundOrderRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;
 import com.szw.payment.api.model.PayOrderResponse;
 import com.szw.payment.common.ChannelEnum;
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.ExtraKeys;
+import com.szw.payment.common.RefundStatusEnum;
 import com.szw.payment.common.model.ConfigInfo;
 import com.szw.payment.common.model.PayOrderMessage;
 import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.model.PrepayResponse;
+import com.szw.payment.common.model.Refund;
+import com.szw.payment.common.model.RefundOrderMessage;
+import com.szw.payment.common.utils.GsonUtil;
+import com.szw.payment.common.utils.UUIDUtil;
 import com.szw.payment.entity.Config;
 import com.szw.payment.entity.PayOrder;
+import com.szw.payment.entity.RefundOrder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Converter {
+	private static final Type TYPE_OF_MAP = new TypeToken<Map<String, String>>() {}.getType();
 
 
 	public static ConfigInfo buildConfigInfo(Config config) {
@@ -105,6 +116,63 @@ public final class Converter {
 		message.setTransactionId(payOrder.getTransactionId());
 		message.setTradeId(payOrder.getTradeId());
 		message.setUserId(payOrder.getUserId());
+		return message;
+	}
+
+	public static RefundOrder buildRefundOrder(PayOrder payOrder, Refund refund) {
+		RefundOrder refundOrder = new RefundOrder();
+		refundOrder.setUserId(payOrder.getUserId());
+		refundOrder.setTradeId(payOrder.getTradeId());
+		refundOrder.setAmount(refund.getRefundFee());
+		refundOrder.setIdempotentKey(refund.getIdempotentKey());
+		refundOrder.setDescription(refund.getRefundDesc());
+		refundOrder.setPassBackParam(refund.getPassBackParam());
+
+		refundOrder.setPayOrderId(payOrder.getId());
+		refundOrder.setConfigId(payOrder.getConfigId());
+
+		refundOrder.setRetries(0);
+		refundOrder.setOutRefundNo(UUIDUtil.uuid());
+		refundOrder.setStatus(RefundStatusEnum.INIT.getCode());
+		return refundOrder;
+	}
+
+	public static Refund buildRefundFromCreateRefundOrderRequest(CreateRefundOrderRequest request) {
+		Refund refund = new Refund();
+		refund.setRefundFee(request.getAmount());
+		refund.setRefundDesc(request.getDescription());
+		refund.setTransactionId(request.getTransactionId());
+		refund.setIdempotentKey(request.getIdempotentKey());
+		refund.setPassBackParam(GsonUtil.GSON.toJson(request.getPassBackParamMap()));
+		return refund;
+	}
+
+	public static Refund buildRefund(PayOrder payOrder, RefundOrder refundOrder) {
+		Refund refund = new Refund();
+		refund.setTotalFee(payOrder.getAmount());
+		refund.setOutTradeNo(payOrder.getOutTradeNo());
+		refund.setTransactionId(payOrder.getTransactionId());
+
+		refund.setRefundFee(refundOrder.getAmount());
+		refund.setRefundDesc(refundOrder.getDescription());
+		refund.setOutRefundNo(refundOrder.getOutRefundNo());
+		return refund;
+	}
+
+	public static RefundOrderMessage buildRefundOrderMessage(RefundOrder refundOrder) {
+		RefundOrderMessage message = new RefundOrderMessage();
+		message.setAmount(refundOrder.getAmount());
+		message.setStatus(refundOrder.getStatus());
+		message.setIdempotentKey(refundOrder.getIdempotentKey());
+		message.setUserId(refundOrder.getUserId());
+		message.setTradeId(refundOrder.getTradeId());
+
+		String passBackParam = refundOrder.getPassBackParam();
+		Map<String, String> map = GsonUtil.GSON.fromJson(passBackParam, TYPE_OF_MAP);
+		if (map != null && !map.isEmpty()) {
+			message.getPassBackParamMap().putAll(map);
+		}
+
 		return message;
 	}
 

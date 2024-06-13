@@ -18,7 +18,7 @@ public interface RefundTaskStore extends Repository<RefundTask, Long> {
 	List<RefundTask> findTop50ByExecTimeLessThanEqualOrderByIdAsc(LocalDateTime time);
 
 	@Modifying
-	@Query("update refund_task set exec_time = :execTime where id = :id")
-	void updateExecTime(Long id, LocalDateTime execTime);
+	@Query("update refund_task set exec_time = :execTime where refund_order_id = :refundOrderId")
+	void updateExecTime(Long refundOrderId, LocalDateTime execTime);
 
 }

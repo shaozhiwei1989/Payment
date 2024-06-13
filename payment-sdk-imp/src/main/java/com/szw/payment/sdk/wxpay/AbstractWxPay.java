@@ -89,10 +89,16 @@ public abstract class AbstractWxPay implements Pay {
 		RefundService service = new RefundService.Builder().config(wxConfig).build();
 		Refund response = service.queryByOutRefundNo(request);
 
+		LocalDateTime refundDoneTime = null;
+		if (response.getSuccessTime() != null) {
+			refundDoneTime = convertStrToLocalDateTime(response.getSuccessTime());
+		}
+
 		String refundStatus = translateRefundStatus(response.getStatus());
 		return RefundQueryResponse.builder()
 				.outRefundNo(response.getOutRefundNo())
 				.transactionId(response.getTransactionId())
+				.refundDoneTime(refundDoneTime)
 				.refundStatus(refundStatus)
 				.build();
 	}

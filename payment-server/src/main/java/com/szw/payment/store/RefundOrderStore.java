@@ -10,6 +10,8 @@ import org.springframework.data.repository.Repository;
 
 public interface RefundOrderStore extends Repository<RefundOrder, Long> {
 
+	RefundOrder findById(Long id);
+
 	void save(RefundOrder refundOrder);
 
 	RefundOrder findByOutRefundNo(String outRefundNo);
@@ -40,12 +42,12 @@ public interface RefundOrderStore extends Repository<RefundOrder, Long> {
 	@Modifying
 	@Query("""
 				update refund_order
-				 set `status` = :toStatus,
-				      refund_end_time = :refundEndTime,
-				      refund_fail_desc = :failDesc
-				where id = :id
+				 set `status` = :#{#refundOrder.status},
+				      refund_end_time = :#{#refundOrder.refundEndTime},
+				      refund_fail_desc = :#{#refundOrder.refundFailDesc}
+				where id = :#{#refundOrder.id}
 				 and `status` = :fromStatus
 			""")
-	int updateRefundToComplete(Long id, int fromStatus, int toStatus, LocalDateTime refundEndTime, String failDesc);
+	int updateRefundToComplete(RefundOrder refundOrder, int fromStatus);
 
 }

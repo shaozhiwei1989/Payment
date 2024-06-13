@@ -1,5 +1,7 @@
 package com.szw.payment.store;
 
+import java.util.List;
+
 import com.szw.payment.entity.PayOrder;
 
 import org.springframework.data.jdbc.repository.query.Modifying;
@@ -13,6 +15,8 @@ public interface PayOrderStore extends Repository<PayOrder, Long> {
 	PayOrder findById(Long id);
 
 	PayOrder findByTradeIdAndChannel(String tradeId, String channel);
+
+	List<PayOrder> findByTradeId(String tradeId);
 
 	PayOrder findByOutTradeNo(String outTradeNo);
 

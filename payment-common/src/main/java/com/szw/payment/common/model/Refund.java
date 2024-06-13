@@ -37,4 +37,15 @@ public class Refund {
 	 * 退款描述
 	 */
 	private String refundDesc;
+
+	/**
+	 * 幂等key 外部传入
+	 */
+	private String idempotentKey;
+
+	/**
+	 * 回传参数
+	 */
+	private String passBackParam;
+
 }
