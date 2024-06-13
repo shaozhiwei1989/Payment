@@ -15,8 +15,6 @@ public interface RefundTaskStore extends Repository<RefundTask, Long> {
 
 	void deleteById(Long id);
 
-	void deleteByRefundOrderId(Long refundOrderId);
-
 	@Query("""
 				select *
 				 from refund_task
@@ -27,6 +25,10 @@ public interface RefundTaskStore extends Repository<RefundTask, Long> {
 				 limit 50
 			""")
 	List<RefundTask> findTop50Tasks(long currentId, int shardTotal, int shardItem);
+
+	@Modifying
+	@Query("delete from refund_task where refund_order_id = :refundOrderId")
+	void deleteByRefundOrderId(Long refundOrderId);
 
 	@Modifying
 	@Query("update refund_task set exec_time = :execTime where refund_order_id = :refundOrderId")

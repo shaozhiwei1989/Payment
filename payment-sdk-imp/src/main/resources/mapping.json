@@ -16,5 +16,11 @@
     "apiVersion": "1.0",
     "cls": "com.szw.payment.sdk.alipay.AliPay",
     "desc": "支付宝支付"
+  },
+  {
+    "channel": "mock_pay",
+    "apiVersion": "1.0",
+    "cls": "com.szw.payment.sdk.mock.MockPay",
+    "desc": "Mock支付"
   }
 ]

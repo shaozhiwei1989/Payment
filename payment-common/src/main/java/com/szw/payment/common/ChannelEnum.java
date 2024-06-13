@@ -14,6 +14,8 @@ public enum ChannelEnum {
 	WX_MINI("wx_mini", "2", "微信小程序支付"),
 
 	ALIPAY("alipay", "3", "支付宝支付"),
+
+	MOCK_PAY("mock_pay", "4", "mock支付"),
 	;
 
 	private final String code;
