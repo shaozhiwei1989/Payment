@@ -70,7 +70,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 			Status refundStatus = notification.getRefundStatus();
 			if (refundStatus == Status.PROCESSING) {
 				// 理论上这种情况不存在
-				return new ServiceResponse<>(ResponseCode.ERROR, "回调状态退款中，暂不处理");
+				return new ServiceResponse<>(ResponseCode.ERROR, "退款中，暂不处理");
 			}
 
 			LocalDateTime doneTime = null;
