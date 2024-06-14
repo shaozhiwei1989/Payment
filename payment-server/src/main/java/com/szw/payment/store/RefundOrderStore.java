@@ -1,7 +1,5 @@
 package com.szw.payment.store;
 
-import java.time.LocalDateTime;
-
 import com.szw.payment.entity.RefundOrder;
 
 import org.springframework.data.jdbc.repository.query.Modifying;
@@ -21,17 +19,18 @@ public interface RefundOrderStore extends Repository<RefundOrder, Long> {
 	@Modifying
 	@Query("""
 				update refund_order
-				  set refund_create_time = :refundCreateTime,
+				  set refund_create_time = ifnull(refund_create_time,now()),
 			          `status` = :toStatus
 			    where id = :id
 			     and `status` = :fromStatus
 			""")
-	int updateRefundToIng(Long id, int fromStatus, int toStatus, LocalDateTime refundCreateTime);
+	int updateRefundToIng(Long id, int fromStatus, int toStatus);
 
 	@Modifying
 	@Query("""
 				update refund_order
-				  set retries = :retries,
+				  set refund_create_time = ifnull(refund_create_time,now()),
+				      retries = :retries,
 			          `status` = :toStatus,
 			          refund_fail_desc = :failDesc
 			    where id = :id

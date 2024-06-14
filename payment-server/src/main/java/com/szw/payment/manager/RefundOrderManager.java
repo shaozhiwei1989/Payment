@@ -132,8 +132,7 @@ public class RefundOrderManager {
 
 	public void updateRefundToIng(RefundOrder refundOrder) {
 		int i = refundOrderStore.updateRefundToIng(refundOrder.getId(),
-				refundOrder.getStatus(), RefundStatusEnum.REFUND_ING.getCode(),
-				LocalDateTime.now());
+				refundOrder.getStatus(), RefundStatusEnum.REFUND_ING.getCode());
 		if (i == 0) {
 			throw new UpdateDataException("数据更新异常#refundOrder:" + refundOrder);
 		}
