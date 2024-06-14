@@ -80,7 +80,7 @@ elasticjob:
       elasticJobClass: com.szw.payment.task.ExecuteRefundTask
       cron: 0 0/1 * * * ?
       timeZone: GMT+08:00
-      shardingTotalCount: 1
+      shardingTotalCount: 2
       overwrite: true
 
 mq-topic:
