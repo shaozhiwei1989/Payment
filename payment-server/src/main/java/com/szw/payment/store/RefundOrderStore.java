@@ -19,7 +19,7 @@ public interface RefundOrderStore extends Repository<RefundOrder, Long> {
 	@Modifying
 	@Query("""
 				update refund_order
-				  set refund_create_time = ifnull(refund_create_time,now()),
+				  set refund_create_time = now(),
 			          `status` = :toStatus
 			    where id = :id
 			     and `status` = :fromStatus
