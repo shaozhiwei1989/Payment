@@ -10,9 +10,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class CompleteForWxpayRequest implements Serializable {
+public class CompleteRefundForWxPayRequest implements Serializable {
 	@Serial
-	private static final long serialVersionUID = -4372203741247386216L;
+	private static final long serialVersionUID = -5264067466807152689L;
 
 	private String appId;
 
