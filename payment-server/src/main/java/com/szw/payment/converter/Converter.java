@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.szw.payment.api.model.CreateRefundOrderRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;
 import com.szw.payment.api.model.PayOrderResponse;
+import com.szw.payment.api.model.QueryRefundOrderResponse;
 import com.szw.payment.common.ChannelEnum;
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.ExtraKeys;
@@ -182,6 +183,25 @@ public final class Converter {
 		refundTask.setUserId(refundOrder.getUserId());
 		refundTask.setTradeId(refundOrder.getTradeId());
 		return refundTask;
+	}
+
+	public static QueryRefundOrderResponse buildQueryRefundOrderResponse(RefundOrder refundOrder) {
+		QueryRefundOrderResponse response = new QueryRefundOrderResponse();
+		response.setAmount(refundOrder.getAmount());
+		response.setStatus(refundOrder.getStatus());
+		response.setUserId(refundOrder.getUserId());
+		response.setTradeId(refundOrder.getTradeId());
+		response.setIdempotentKey(refundOrder.getIdempotentKey());
+		response.setRefundEndTime(refundOrder.getRefundEndTime());
+		response.setRefundCreateTime(refundOrder.getRefundCreateTime());
+		response.setRefundFailDesc(refundOrder.getRefundFailDesc());
+
+		String passBackParam = refundOrder.getPassBackParam();
+		Map<String, String> map = GsonUtil.GSON.fromJson(passBackParam, TYPE_OF_MAP);
+		if (map != null && !map.isEmpty()) {
+			response.getPassBackParamMap().putAll(map);
+		}
+		return response;
 	}
 
 }

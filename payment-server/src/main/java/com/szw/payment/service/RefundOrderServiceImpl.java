@@ -6,12 +6,15 @@ import com.szw.payment.api.ResponseCode;
 import com.szw.payment.api.ServiceResponse;
 import com.szw.payment.api.model.CompleteRefundForWxPayRequest;
 import com.szw.payment.api.model.CreateRefundOrderRequest;
+import com.szw.payment.api.model.QueryRefundOrderRequest;
+import com.szw.payment.api.model.QueryRefundOrderResponse;
 import com.szw.payment.api.service.RefundOrderService;
 import com.szw.payment.common.WxPayKeys;
 import com.szw.payment.common.model.Refund;
 import com.szw.payment.converter.Converter;
 import com.szw.payment.entity.Config;
 import com.szw.payment.entity.PayOrder;
+import com.szw.payment.entity.RefundOrder;
 import com.szw.payment.exception.NotEnoughAmountException;
 import com.szw.payment.facade.PayFacade;
 import com.szw.payment.manager.ConfigManager;
@@ -88,6 +91,20 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 			log.error("", e);
 			String msg = (e instanceof ValidationException) ? "签名验证失败" : "接口异常";
 			return new ServiceResponse<>(ResponseCode.ERROR, msg);
+		}
+	}
+
+	@Override
+	public ServiceResponse<QueryRefundOrderResponse> queryRefundOrder(QueryRefundOrderRequest request) {
+		try {
+			String idempotentKey = request.getIdempotentKey();
+			RefundOrder refundOrder = refundOrderManager.findByIdempotentKey(idempotentKey);
+			QueryRefundOrderResponse response = Converter.buildQueryRefundOrderResponse(refundOrder);
+			return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", response);
+		}
+		catch (Exception e) {
+			log.error("", e);
+			return new ServiceResponse<>(ResponseCode.ERROR, "接口异常");
 		}
 	}
 

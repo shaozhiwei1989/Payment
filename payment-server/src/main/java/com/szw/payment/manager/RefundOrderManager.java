@@ -121,6 +121,10 @@ public class RefundOrderManager {
 		return refundOrderStore.countByIdempotentKey(idempotentKey);
 	}
 
+	public RefundOrder findByIdempotentKey(String idempotentKey) {
+		return refundOrderStore.findByIdempotentKey(idempotentKey);
+	}
+
 	public void updateRefundToRetry(RefundOrder refundOrder, String failDesc, int retries) {
 		int i = refundOrderStore.updateRefundToRetry(refundOrder.getId(),
 				refundOrder.getStatus(), RefundStatusEnum.WAITING_RETRY.getCode(),

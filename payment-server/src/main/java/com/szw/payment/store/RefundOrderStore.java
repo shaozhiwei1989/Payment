@@ -16,6 +16,8 @@ public interface RefundOrderStore extends Repository<RefundOrder, Long> {
 
 	int countByIdempotentKey(String idempotentKey);
 
+	RefundOrder findByIdempotentKey(String idempotentKey);
+
 	@Modifying
 	@Query("""
 				update refund_order

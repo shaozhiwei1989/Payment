@@ -33,6 +33,7 @@ public class CreateRefundOrderRequest implements Serializable {
 
 	/**
 	 * 幂等key 外部传入
+	 * 要求全局唯一，建议使用业务系统标识 + 业务数据唯一键
 	 */
 	private String idempotentKey;
 

@@ -2,12 +2,17 @@ package com.szw.payment.test;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
+import com.szw.payment.api.ServiceResponse;
 import com.szw.payment.api.model.CreateRefundOrderRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;
+import com.szw.payment.api.model.QueryRefundOrderRequest;
+import com.szw.payment.api.model.QueryRefundOrderResponse;
 import com.szw.payment.api.service.PayOrderService;
 import com.szw.payment.api.service.RefundOrderService;
 import com.szw.payment.bootstrap.Application;
+import com.szw.payment.common.utils.GsonUtil;
 import com.szw.payment.entity.RefundTask;
 import com.szw.payment.manager.PayOrderManager;
 import com.szw.payment.manager.RefundTaskManager;
@@ -38,13 +43,16 @@ public class Test1 {
 
 	@Test
 	public void test1() {
-		PayOrderCreateRequest request = new PayOrderCreateRequest();
-		request.setUserId("test_user_id_1");
-		request.setTradeId("test_trade_id_1");
-		request.setChannel("mock_pay");
-		request.setTotalFee(50L);
-		request.setBody("test_body_1");
-		payOrderService.createPayOrder(request);
+		Random random = new Random();
+		for (int i = 100100; i < 200100; i++) {
+			PayOrderCreateRequest request = new PayOrderCreateRequest();
+			request.setUserId("test_user_id_1");
+			request.setTradeId("test_trade_id_100_" + i);
+			request.setChannel("mock_pay");
+			request.setTotalFee((long) random.nextInt(1, 100));
+			request.setBody("test_body_100_" + i);
+			payOrderService.createPayOrder(request);
+		}
 	}
 
 	@Test
@@ -87,6 +95,15 @@ public class Test1 {
 
 		Long refundOrderId = tasks.getFirst().getRefundOrderId();
 		refundTaskStore.deleteByRefundOrderId(refundOrderId);
+	}
+
+	@Test
+	public void test6() {
+		QueryRefundOrderRequest request = new QueryRefundOrderRequest();
+		request.setIdempotentKey("test4_1");
+		ServiceResponse<QueryRefundOrderResponse> response = refundOrderService.queryRefundOrder(request);
+		System.out.printf(response + "\n");
+		System.out.printf(GsonUtil.GSON.toJson(response) + "\n");
 	}
 
 }
