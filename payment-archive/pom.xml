@@ -84,6 +84,8 @@
     </dependencies>
 
     <build>
+        <finalName>payment-archive</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

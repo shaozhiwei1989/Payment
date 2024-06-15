@@ -81,6 +81,8 @@
     </dependencies>
 
     <build>
+        <finalName>payment-web</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
