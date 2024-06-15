@@ -70,9 +70,6 @@ dubbo:
     address: zookeeper://127.0.0.1:2181
     check: false
 
-logging:
-  config: 'classpath:logback.xml'
-
 ## elasticjob
 elasticjob:
   regCenter:
