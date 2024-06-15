@@ -26,7 +26,7 @@ public class PayOrderManager {
 	@Inject
 	private PayOrderStore payOrderStore;
 
-	@Value("#{${message-producer.name:kafka_producer}}")
+	@Value("#{${message-producer.name}}")
 	private MessageProducer<PayOrderMessage> messageProducer;
 
 	@Value("${mq-topic.pay}")
