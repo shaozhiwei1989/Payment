@@ -38,8 +38,7 @@ public class RefundOrderManager {
 	@Inject
 	private RefundTaskStore refundTaskStore;
 
-	@Inject
-	@Named("kafka_producer")
+	@Value("#{${message-producer.name:kafka_producer}}")
 	private MessageProducer<RefundOrderMessage> messageProducer;
 
 	@Value("${mq-topic.refund}")

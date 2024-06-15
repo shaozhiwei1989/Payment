@@ -87,9 +87,8 @@ mq-topic:
   pay: pay
   refund: refund
 
-
-
-
+message-producer:
+  name: kafka_producer
 
 
 
