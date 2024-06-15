@@ -43,8 +43,7 @@ CREATE TABLE `pay_order` (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_out_trade_no` (`out_trade_no`),
-  UNIQUE KEY `uk_trade_id_channel` (`trade_id`,`channel`),
-  KEY `idx_create_time` (`create_time`) USING BTREE
+  UNIQUE KEY `uk_trade_id_channel` (`trade_id`,`channel`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `refund_order` (
