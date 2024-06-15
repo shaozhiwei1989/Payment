@@ -12,8 +12,11 @@ import org.springframework.context.annotation.ComponentScan;
 public class Application {
 
 	public static void main(String[] args) {
+		long start = System.currentTimeMillis();
 		SpringApplication.run(Application.class, args);
-		System.out.print("------------started--------- \n");
+		long end = System.currentTimeMillis();
+
+		System.out.print("---started--- time:" + (end - start) + "ms \n");
 	}
 
 }

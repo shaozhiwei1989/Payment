@@ -15,9 +15,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class Application {
 
 	public static void main(String[] args) {
+		long start = System.currentTimeMillis();
 		SpringApplication.run(Application.class, args);
+		long end = System.currentTimeMillis();
 
-		System.out.print("------------started--------- \n");
+		System.out.print("---started--- time:" + (end - start) + "ms \n");
 		CountDownLatch latch = new CountDownLatch(1);
 		try {
 			latch.await();
