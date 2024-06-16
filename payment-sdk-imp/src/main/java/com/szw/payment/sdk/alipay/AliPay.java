@@ -8,7 +8,6 @@ import static com.szw.payment.common.AliPayKeys.TRADE_STATUS_WAIT_BUYER_PAY;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alipay.api.AlipayApiException;
@@ -36,6 +35,7 @@ import com.szw.payment.common.model.PrepayResponse;
 import com.szw.payment.common.model.Refund;
 import com.szw.payment.common.model.RefundCreateResponse;
 import com.szw.payment.common.model.RefundQueryResponse;
+import com.szw.payment.common.utils.UUIDUtil;
 import com.szw.payment.sdk.Pay;
 import com.szw.payment.sdk.exception.PayErrCode;
 import com.szw.payment.sdk.exception.PayException;
@@ -206,7 +206,7 @@ public class AliPay implements Pay {
 	}
 
 	private static String genPrePayId() {
-		return "alipay" + UUID.randomUUID().toString().replace("-", "");
+		return "alipay@" + UUIDUtil.uuid();
 	}
 
 	private static String errMsg(String action, AlipayResponse response) {

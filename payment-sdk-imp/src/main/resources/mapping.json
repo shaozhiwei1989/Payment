@@ -20,7 +20,7 @@
   {
     "channel": "mock_pay",
     "apiVersion": "1.0",
-    "cls": "com.szw.payment.sdk.mock.MockPay",
+    "cls": "com.szw.payment.sdk.mockpay.MockPay",
     "desc": "Mock支付"
   }
 ]
