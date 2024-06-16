@@ -11,6 +11,7 @@ import com.szw.payment.converter.Converter;
 import com.szw.payment.entity.PayOrder;
 import com.szw.payment.entity.RefundOrder;
 import com.szw.payment.entity.RefundTask;
+import com.szw.payment.exception.NotEnoughAmountException;
 import com.szw.payment.exception.UpdateDataException;
 import com.szw.payment.producer.MessageProducer;
 import com.szw.payment.store.PayOrderStore;
@@ -60,7 +61,9 @@ public class RefundOrderManager {
 			refundTaskStore.save(refundTask);
 		}
 		if (i == 0) {
-			throw new UpdateDataException("数据更新异常#payOrder:" + payOrder);
+			throw new NotEnoughAmountException(
+					String.format("余额不足 支付单余额:%s 申请退款金额:%s",
+							payOrder.getBalance(), refund.getRefundFee()));
 		}
 	}
 
