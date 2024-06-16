@@ -60,7 +60,7 @@ public class RefundOrderManager {
 			RefundTask refundTask = Converter.buildRefundTask(refundOrder);
 			refundTaskStore.save(refundTask);
 		}
-		if (i == 0) {
+		else {
 			throw new NotEnoughAmountException(
 					String.format("余额不足 支付单余额:%s 申请退款金额:%s",
 							payOrder.getBalance(), refund.getRefundFee()));
