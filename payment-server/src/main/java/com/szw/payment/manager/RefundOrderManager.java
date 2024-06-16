@@ -59,6 +59,9 @@ public class RefundOrderManager {
 			RefundTask refundTask = Converter.buildRefundTask(refundOrder);
 			refundTaskStore.save(refundTask);
 		}
+		if (i == 0) {
+			throw new UpdateDataException("数据更新异常#payOrder:" + payOrder);
+		}
 	}
 
 	@Transactional(rollbackFor = Exception.class)
