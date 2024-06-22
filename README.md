@@ -34,7 +34,7 @@ mvn clean package -Dmaven.test.skip=true -U
 ```
  java -jar payment-server.jar &
  java -jar payment-web.jar &
- java -jar payment-archive.jar & 
+ java -jar payment-archive.jar &  (如果没有数据归档需求，无需部署)
 ```
 ## 如何接入第三方支付
 Payment支持灵活扩展第三方支付渠道，只需4步即可完成。
