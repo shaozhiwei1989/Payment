@@ -1,9 +1,11 @@
 package com.szw.payment.test;
 
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.szw.payment.api.ServiceResponse;
 import com.szw.payment.api.model.CreateRefundOrderRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;
@@ -40,6 +42,9 @@ public class Test1 {
 
 	@Inject
 	private RefundTaskStore refundTaskStore;
+
+	@Inject
+	private DataSource dataSource;
 
 	@Test
 	public void test1() {
@@ -104,6 +109,13 @@ public class Test1 {
 		ServiceResponse<QueryRefundOrderResponse> response = refundOrderService.queryRefundOrder(request);
 		System.out.printf(response + "\n");
 		System.out.printf(GsonUtil.GSON.toJson(response) + "\n");
+	}
+
+	@Test
+	public void test7() {
+		DruidDataSource druidDataSource = (DruidDataSource) dataSource;
+		System.out.printf(druidDataSource + "\n");
+		System.out.printf(druidDataSource.getMinIdle() + "\n");
 	}
 
 }
