@@ -1,17 +1,17 @@
 package com.szw.payment.producer;
 
 import com.szw.payment.common.utils.GsonUtil;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
 @Named("rocketmq_producer")
 public class RocketMQProducer<T> implements MessageProducer<T> {
 
-	@Inject
+	@Autowired(required = false)
 	private RocketMQTemplate rocketMQTemplate;
 
 

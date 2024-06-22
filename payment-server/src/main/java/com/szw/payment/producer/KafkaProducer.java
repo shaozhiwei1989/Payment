@@ -2,16 +2,16 @@ package com.szw.payment.producer;
 
 import com.szw.payment.common.Constants;
 import com.szw.payment.common.utils.GsonUtil;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 
 @Named("kafka_producer")
 public class KafkaProducer<T> implements MessageProducer<T> {
 
-	@Inject
+	@Autowired(required = false)
 	private KafkaTemplate<String, String> kafkaTemplate;
 
 

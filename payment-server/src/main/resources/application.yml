@@ -70,14 +70,14 @@ dubbo:
     address: zookeeper://127.0.0.1:2181
     check: false
 
-rocketmq:
-  name-server: 127.0.0.1:11
-  producer:
-    retry-times-when-send-async-failed: 2
-    retry-times-when-send-failed: 2
-    group: payment-server-producer
-    send-message-timeout: 3000
-    namespace: DEFAULT
+#rocketmq:
+#  name-server: 127.0.0.1:11011
+#  producer:
+#    retry-times-when-send-async-failed: 2
+#    retry-times-when-send-failed: 2
+#    group: payment-server-producer
+#    send-message-timeout: 3000
+#    namespace: DEFAULT
 
 ## elasticjob
 elasticjob:
