@@ -127,7 +127,7 @@ public enum ChannelEnum {
 
 }
 ```
-5. 新增配置表记录 payment.config
+4. 新增配置表记录 payment.config
 ```
 INSERT INTO payment.config
 ( channel, app_id, mch_id, mch_serial_number, api_key, public_key, private_key, notify_url, refund_url, api_version, description, is_deleted)
