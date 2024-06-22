@@ -7,7 +7,7 @@ Payment是对接第三方支付服务的系统，完成收单和退款功能。�
 | payment-api  | 接口模块，dubbo服务的API  |
 | payment-archive  | 数据归档，非必要服务。需独立部署，依赖mongoDB。如果没有数据归档需求，无需部署  |
 | payment-common  | 通用包模块，共用model、常量和工具类  |
-| payment-sdk-imp  | 第三方接口访问实现，微信、支付宝等  |
+| payment-sdk-imp  | 第三方API交互，如：微信、支付宝等  |
 | payment-server | 支付server服务，必要服务，需独立部署  |
 | payment-web | 支付Web服务，必要服务，需独立部署  |
 
