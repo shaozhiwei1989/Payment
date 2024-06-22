@@ -9,7 +9,7 @@ Payment是对接第三方支付服务的系统，完成收单和退款功能。�
 | payment-common  | 通用包模块，共用model、常量和工具类  |
 | payment-sdk-imp  | 第三方API交互，如：微信、支付宝等  |
 | payment-server | 支付server服务，必要服务，需独立部署  |
-| payment-web | 支付Web服务，必要服务，需独立部署  |
+| payment-web | 支付web服务，必要服务，需独立部署  |
 
 ## 快速开始
 #### 环境准备
