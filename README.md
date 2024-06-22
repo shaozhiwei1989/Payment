@@ -18,7 +18,7 @@ Payment是对接第三方支付服务的系统，完成收单和退款功能。�
 - kafka 2.13+
 - mysql 5.7+
 - mongoDB 7.0+ (如果没有数据归档需求，无需部署)
-#### 如何部署(后续完善自动化部署)
+#### 如何部署
 1. 下载项目代码
 ```
 git clone https://github.com/shaozhiwei1989/Payment.git
