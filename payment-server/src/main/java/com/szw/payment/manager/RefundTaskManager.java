@@ -102,6 +102,7 @@ public class RefundTaskManager {
 
 		private final RefundOrder refundOrder;
 
+
 		@Override
 		public boolean onException(Method method, PayException exception) {
 			if (!"createRefund".equals(method.getName())) {
@@ -110,7 +111,7 @@ public class RefundTaskManager {
 			}
 
 			int maxRetries = 30;
-			int retries = Optional.ofNullable(refundOrder.getRetries()).orElse(0); ;
+			int retries = Optional.ofNullable(refundOrder.getRetries()).orElse(0);
 			if (exception.isRetryLater() && retries < maxRetries) {
 				refundOrderManager.updateRefundToRetry(refundOrder, exception.getMessage(), (retries + 1));
 
