@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,27 +19,31 @@ public class PayOrderCreateRequest implements Serializable {
 	/**
 	 * 支付渠道
 	 */
-	@NotNull(message = "支付渠道不能为空")
+	@NotBlank(message = "支付渠道不能为空")
 	private String channel;
 
 	/**
 	 * 商品描述
 	 */
+	@NotBlank(message = "商品描述不能为空")
 	private String body;
 
 	/**
 	 * 支付金额
 	 */
+	@NotNull(message = "支付金额不能为空")
 	private Long totalFee;
 
 	/**
 	 * 平台订单id
 	 */
+	@NotBlank(message = "订单id不能为空")
 	private String tradeId;
 
 	/**
 	 * 平台用户id
 	 */
+	@NotBlank(message = "商品描述不能为空")
 	private String userId;
 
 	/**
