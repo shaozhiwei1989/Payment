@@ -2,7 +2,7 @@ package com.szw.payment.controller;
 
 import java.util.Objects;
 
-import com.szw.payment.api.ServiceResponse;
+import com.szw.dubbo.plugin.common.result.ServiceResponse;
 import com.szw.payment.api.model.CompleteRefundForWxPayRequest;
 import com.szw.payment.api.service.RefundOrderService;
 import com.szw.payment.common.WxPayKeys;

@@ -6,8 +6,11 @@ spring:
     name: payment-web
 
 dubbo:
+  provider:
+    filter: validation_filter,global_exception_filter
   consumer:
     check: false
+    filter: validation_filter
   application:
     name: payment-web
     qos-enable: false

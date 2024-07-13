@@ -58,8 +58,11 @@ spring:
       dialect: MYSQL
 
 dubbo:
+  provider:
+    filter: validation_filter,global_exception_filter
   consumer:
     check: false
+    filter: validation_filter
   application:
     name: payment-server
     qos-enable: false

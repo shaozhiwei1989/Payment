@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.google.gson.reflect.TypeToken;
+import com.szw.dubbo.plugin.common.result.ServiceResponse;
 import com.szw.payment.Result;
 import com.szw.payment.ResultCode;
-import com.szw.payment.api.ServiceResponse;
 import com.szw.payment.api.model.CompleteForAlipayRequest;
 import com.szw.payment.api.model.CompleteForWxpayRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;

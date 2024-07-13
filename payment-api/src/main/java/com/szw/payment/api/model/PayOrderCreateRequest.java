@@ -3,11 +3,14 @@ package com.szw.payment.api.model;
 import java.io.Serial;
 import java.io.Serializable;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Valid
 public class PayOrderCreateRequest implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 4335789550292369650L;
@@ -15,6 +18,7 @@ public class PayOrderCreateRequest implements Serializable {
 	/**
 	 * 支付渠道
 	 */
+	@NotNull(message = "支付渠道不能为空")
 	private String channel;
 
 	/**

@@ -2,8 +2,8 @@ package com.szw.payment.service;
 
 import java.time.LocalDateTime;
 
-import com.szw.payment.api.ResponseCode;
-import com.szw.payment.api.ServiceResponse;
+import com.szw.dubbo.plugin.common.result.ResponseCode;
+import com.szw.dubbo.plugin.common.result.ServiceResponse;
 import com.szw.payment.api.model.CompleteRefundForWxPayRequest;
 import com.szw.payment.api.model.CreateRefundOrderRequest;
 import com.szw.payment.api.model.QueryRefundOrderRequest;
@@ -20,7 +20,6 @@ import com.szw.payment.facade.PayFacade;
 import com.szw.payment.manager.ConfigManager;
 import com.szw.payment.manager.PayOrderManager;
 import com.szw.payment.manager.RefundOrderManager;
-import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.notification.NotificationConfig;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
@@ -52,60 +51,41 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 
 	@Override
 	public ServiceResponse<Boolean> createRefundOrder(CreateRefundOrderRequest request) {
-		try {
-			String idempotentKey = request.getIdempotentKey();
-			int count = refundOrderManager.countByIdempotentKey(idempotentKey);
-			if (count == 0) {
-				innerCreateRefundOrder(request);
-			}
-			return new ServiceResponse<>(ResponseCode.SUCCESS, "", true);
+		String idempotentKey = request.getIdempotentKey();
+		int count = refundOrderManager.countByIdempotentKey(idempotentKey);
+		if (count == 0) {
+			innerCreateRefundOrder(request);
 		}
-		catch (Exception e) {
-			log.error("", e);
-			return new ServiceResponse<>(ResponseCode.ERROR, "接口异常");
-		}
+		return new ServiceResponse<>(ResponseCode.SUCCESS, "", true);
 	}
 
 	@Override
 	public ServiceResponse<Boolean> completeRefundForWxPay(CompleteRefundForWxPayRequest request) {
-		try {
-			RefundNotification notification = validAndParseWxNotificationStr(request);
-			Status refundStatus = notification.getRefundStatus();
-			if (refundStatus == Status.PROCESSING) {
-				// 理论上这种情况不存在
-				return new ServiceResponse<>(ResponseCode.ERROR, "退款中，暂不处理");
-			}
-
-			LocalDateTime doneTime = null;
-			String successTime = notification.getSuccessTime();
-			if (StringUtils.isNotBlank(successTime)) {
-				doneTime = LocalDateTime.parse(successTime, WxPayKeys.formatter);
-			}
-
-			boolean success = (refundStatus == Status.SUCCESS);
-			String outRefundNo = notification.getOutRefundNo();
-			refundOrderManager.completeRefund(outRefundNo, doneTime, success, null);
-			return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", true);
+		RefundNotification notification = validAndParseWxNotificationStr(request);
+		Status refundStatus = notification.getRefundStatus();
+		if (refundStatus == Status.PROCESSING) {
+			// 理论上这种情况不存在
+			return new ServiceResponse<>(ResponseCode.ERROR, "退款中，暂不处理");
 		}
-		catch (Exception e) {
-			log.error("", e);
-			String msg = (e instanceof ValidationException) ? "签名验证失败" : "接口异常";
-			return new ServiceResponse<>(ResponseCode.ERROR, msg);
+
+		LocalDateTime doneTime = null;
+		String successTime = notification.getSuccessTime();
+		if (StringUtils.isNotBlank(successTime)) {
+			doneTime = LocalDateTime.parse(successTime, WxPayKeys.formatter);
 		}
+
+		boolean success = (refundStatus == Status.SUCCESS);
+		String outRefundNo = notification.getOutRefundNo();
+		refundOrderManager.completeRefund(outRefundNo, doneTime, success, null);
+		return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", true);
 	}
 
 	@Override
 	public ServiceResponse<QueryRefundOrderResponse> queryRefundOrder(QueryRefundOrderRequest request) {
-		try {
-			String idempotentKey = request.getIdempotentKey();
-			RefundOrder refundOrder = refundOrderManager.findByIdempotentKey(idempotentKey);
-			QueryRefundOrderResponse response = Converter.buildQueryRefundOrderResponse(refundOrder);
-			return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", response);
-		}
-		catch (Exception e) {
-			log.error("", e);
-			return new ServiceResponse<>(ResponseCode.ERROR, "接口异常");
-		}
+		String idempotentKey = request.getIdempotentKey();
+		RefundOrder refundOrder = refundOrderManager.findByIdempotentKey(idempotentKey);
+		QueryRefundOrderResponse response = Converter.buildQueryRefundOrderResponse(refundOrder);
+		return new ServiceResponse<>(ResponseCode.SUCCESS, "成功", response);
 	}
 
 	private void innerCreateRefundOrder(CreateRefundOrderRequest request) {

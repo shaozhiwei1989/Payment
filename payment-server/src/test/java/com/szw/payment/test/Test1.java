@@ -6,15 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.szw.payment.api.ServiceResponse;
 import com.szw.payment.api.model.CreateRefundOrderRequest;
 import com.szw.payment.api.model.PayOrderCreateRequest;
-import com.szw.payment.api.model.QueryRefundOrderRequest;
-import com.szw.payment.api.model.QueryRefundOrderResponse;
 import com.szw.payment.api.service.PayOrderService;
 import com.szw.payment.api.service.RefundOrderService;
 import com.szw.payment.bootstrap.Application;
-import com.szw.payment.common.utils.GsonUtil;
 import com.szw.payment.entity.RefundTask;
 import com.szw.payment.manager.PayOrderManager;
 import com.szw.payment.manager.RefundTaskManager;
@@ -102,14 +98,14 @@ public class Test1 {
 		refundTaskStore.deleteByRefundOrderId(refundOrderId);
 	}
 
-	@Test
-	public void test6() {
-		QueryRefundOrderRequest request = new QueryRefundOrderRequest();
-		request.setIdempotentKey("test4_1");
-		ServiceResponse<QueryRefundOrderResponse> response = refundOrderService.queryRefundOrder(request);
-		System.out.printf(response + "\n");
-		System.out.printf(GsonUtil.GSON.toJson(response) + "\n");
-	}
+//	@Test
+//	public void test6() {
+//		QueryRefundOrderRequest request = new QueryRefundOrderRequest();
+//		request.setIdempotentKey("test4_1");
+//		ServiceResponse<QueryRefundOrderResponse> response = refundOrderService.queryRefundOrder(request);
+//		System.out.printf(response + "\n");
+//		System.out.printf(GsonUtil.GSON.toJson(response) + "\n");
+//	}
 
 	@Test
 	public void test7() {

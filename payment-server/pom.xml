@@ -111,6 +111,16 @@
             <artifactId>curator-x-discovery</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.szw.dubbo.plugin</groupId>
+            <artifactId>dubbo-global-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.szw.dubbo.plugin</groupId>
+            <artifactId>dubbo-parameter-validation</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -78,6 +78,22 @@
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-x-discovery</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.szw.dubbo.plugin</groupId>
+            <artifactId>dubbo-global-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.szw.dubbo.plugin</groupId>
+            <artifactId>dubbo-parameter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,6 +1,6 @@
 package com.szw.payment.api.service;
 
-import com.szw.payment.api.ServiceResponse;
+import com.szw.dubbo.plugin.common.result.ServiceResponse;
 import com.szw.payment.api.model.CompleteRefundForWxPayRequest;
 import com.szw.payment.api.model.CreateRefundOrderRequest;
 import com.szw.payment.api.model.QueryRefundOrderRequest;
