@@ -56,7 +56,7 @@ public class CreateRefundOrderRequest implements Serializable {
 	 * 退款金额
 	 */
 	@NotNull(message = "退款金额不能为空")
-	@Min(message = "退款金额必须大于0", value = 0)
+	@Min(message = "退款金额必须大于0", value = 1)
 	private Long amount;
 
 	/**
