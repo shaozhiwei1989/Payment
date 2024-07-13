@@ -43,7 +43,7 @@ public class PayOrderCreateRequest implements Serializable {
 	/**
 	 * 平台用户id
 	 */
-	@NotBlank(message = "商品描述不能为空")
+	@NotBlank(message = "用户id不能为空")
 	private String userId;
 
 	/**
