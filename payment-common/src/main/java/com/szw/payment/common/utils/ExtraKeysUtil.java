@@ -2,7 +2,7 @@ package com.szw.payment.common.utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public final class ExtraKeysUtil {
 
 
 	public static Map<String, String> findExtraKeys(Object target) {
-		Map<String /* key name */, String /* field value */> map = new LinkedHashMap<>();
+		Map<String /* key name */, String /* field value */> map = new HashMap<>();
 		if (target == null) {
 			return map;
 		}
