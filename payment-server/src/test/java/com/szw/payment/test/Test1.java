@@ -45,13 +45,13 @@ public class Test1 {
 	@Test
 	public void test1() {
 		Random random = new Random();
-		for (int i = 100100; i < 200100; i++) {
+		for (int i = 300100; i < 300101; i++) {
 			PayOrderCreateRequest request = new PayOrderCreateRequest();
 			request.setUserId("test_user_id_1");
-			request.setTradeId("test_trade_id_100_" + i);
+			request.setTradeId("test_trade_id_10000_" + i);
 			request.setChannel("mock_pay");
 			request.setTotalFee((long) random.nextInt(1, 100));
-			request.setBody("test_body_100_" + i);
+			request.setBody("test_body_10000_" + i);
 			payOrderService.createPayOrder(request);
 		}
 	}

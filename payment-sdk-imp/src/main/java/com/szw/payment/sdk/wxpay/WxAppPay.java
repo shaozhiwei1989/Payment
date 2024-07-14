@@ -54,6 +54,8 @@ public class WxAppPay extends AbstractWxPay implements Pay {
 				.sign(signStr)
 				.signType(signer.getAlgorithm())
 				.packageValue("Sign=WXPay")
+				.appId(configInfo.getAppId())
+				.mchId(configInfo.getMchId())
 				.build();
 	}
 

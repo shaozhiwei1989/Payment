@@ -60,6 +60,8 @@ public class WxMiniPay extends AbstractWxPay implements Pay {
 				.sign(signStr)
 				.signType(signer.getAlgorithm())
 				.packageValue(packageValue)
+				.appId(configInfo.getAppId())
+				.mchId(configInfo.getMchId())
 				.build();
 	}
 

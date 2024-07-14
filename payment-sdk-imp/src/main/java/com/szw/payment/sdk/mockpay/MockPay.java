@@ -15,9 +15,12 @@ import com.szw.payment.sdk.Pay;
 
 public class MockPay implements Pay {
 
+	private ConfigInfo configInfo;
+
+
 	@Override
 	public void initConfig(ConfigInfo configInfo) throws Exception {
-
+		this.configInfo = configInfo;
 	}
 
 	@Override
@@ -26,6 +29,8 @@ public class MockPay implements Pay {
 		return PrepayResponse.builder()
 				.prePayId(prePayId)
 				.sign("mockpay" + System.currentTimeMillis())
+				.appId(configInfo.getAppId())
+				.mchId(configInfo.getMchId())
 				.build();
 	}
 

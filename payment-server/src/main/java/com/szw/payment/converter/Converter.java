@@ -19,6 +19,7 @@ import com.szw.payment.common.model.Prepay;
 import com.szw.payment.common.model.PrepayResponse;
 import com.szw.payment.common.model.Refund;
 import com.szw.payment.common.model.RefundOrderMessage;
+import com.szw.payment.common.utils.ExtraKeysUtil;
 import com.szw.payment.common.utils.GsonUtil;
 import com.szw.payment.common.utils.UUIDUtil;
 import com.szw.payment.entity.Config;
@@ -64,15 +65,11 @@ public final class Converter {
 		payOrder.setStatus(Constants.Pay.WAIT_PAY);
 
 		payOrder.setPrePayId(response.getPrePayId());
-		payOrder.putExtraParam(ExtraKeys.SIGN, response.getSign())
-				.putExtraParam(ExtraKeys.SIGN_TYPE, response.getSignType())
-				.putExtraParam(ExtraKeys.NONCE_STR, response.getNonceStr())
-				.putExtraParam(ExtraKeys.TIME_STAMP, response.getTimeStamp())
-				.putExtraParam(ExtraKeys.PACKAGE_VALUE, response.getPackageValue())
-				.putExtraParam(ExtraKeys.APP_ID, config.getAppId())
-				.putExtraParam(ExtraKeys.MCH_ID, config.getMchId())
-				.generateExtraParam();
 
+		// key = extra key name, value = field value
+		Map<String, String> extraKeys = ExtraKeysUtil.findExtraKeys(response);
+		extraKeys.forEach(payOrder::putExtraParam);
+		payOrder.generateExtraParam();
 		return payOrder;
 	}
 
