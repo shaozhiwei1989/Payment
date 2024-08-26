@@ -58,7 +58,7 @@ public class Test1 {
 
 	@Test
 	public void test2() {
-		payOrderManager.completePay("test_trade_id_1-4", System.currentTimeMillis() + "", LocalDateTime.now());
+		payOrderManager.completePay("test_trade_id_10000_8-4", System.currentTimeMillis() + "", LocalDateTime.now());
 	}
 
 	@Test
